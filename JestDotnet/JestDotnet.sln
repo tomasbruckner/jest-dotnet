@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JestDotnet", "JestDotnet\JestDotnet.csproj", "{7EF587E9-87FD-43ED-B52B-6DABD041457B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{FC20BD3A-55A3-43F3-96E9-5E09D0531091}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{2CB8D887-AB2A-4359-B580-D6F385A75119}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XUnitTests", "XUnitTests\XUnitTests.csproj", "{52B09402-BDDE-483F-BBD1-7143EA114ED8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7EF587E9-87FD-43ED-B52B-6DABD041457B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7EF587E9-87FD-43ED-B52B-6DABD041457B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7EF587E9-87FD-43ED-B52B-6DABD041457B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7EF587E9-87FD-43ED-B52B-6DABD041457B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52B09402-BDDE-483F-BBD1-7143EA114ED8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52B09402-BDDE-483F-BBD1-7143EA114ED8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52B09402-BDDE-483F-BBD1-7143EA114ED8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52B09402-BDDE-483F-BBD1-7143EA114ED8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{7EF587E9-87FD-43ED-B52B-6DABD041457B} = {2CB8D887-AB2A-4359-B580-D6F385A75119}
+		{52B09402-BDDE-483F-BBD1-7143EA114ED8} = {FC20BD3A-55A3-43F3-96E9-5E09D0531091}
+	EndGlobalSection
+EndGlobal
