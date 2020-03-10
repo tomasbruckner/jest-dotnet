@@ -1,0 +1,13 @@
+{
+  "FirstName": "John",
+  "LastName": "Bam",
+  "DateOfBirth": "2008-07-07T00:00:00",
+  "Age": 13,
+  "Parent": {
+    "FirstName": "James",
+    "LastName": "Bam",
+    "DateOfBirth": "1978-07-07T00:00:00",
+    "Age": 43,
+    "Parent": null
+  }
+}

@@ -23,6 +23,27 @@ namespace XUnitTests
         }
 
         [Fact]
+        public void ShouldMatchSnapshotRecursion()
+        {
+            var person = new PersonRecursion
+            {
+                Age = 13,
+                DateOfBirth = new DateTime(2008, 7, 7),
+                FirstName = "John",
+                LastName = "Bam",
+                Parent = new PersonRecursion
+                {
+                    Age = 43,
+                    DateOfBirth = new DateTime(1978, 7, 7),
+                    FirstName = "James",
+                    LastName = "Bam"
+                }
+            };
+
+            person.ShouldMatchSnapshot();
+        }
+
+        [Fact]
         public void ShouldMatchSnapshotMismatch()
         {
             var person = new Person
