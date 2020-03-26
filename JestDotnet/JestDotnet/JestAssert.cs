@@ -1,13 +1,14 @@
+using System;
 using System.Runtime.CompilerServices;
 using JestDotnet.Core;
 using JestDotnet.Core.Exceptions;
 
 namespace JestDotnet
 {
-    public static class JestDotnetExtensions
+    public static class JestAssert
     {
         public static void ShouldMatchSnapshot(
-            this object actual,
+            object actual,
             string hint = "",
             [CallerMemberName] string memberName = "",
             [CallerFilePath] string sourceFilePath = ""
@@ -22,25 +23,26 @@ namespace JestDotnet
                 return;
             }
 
-            var (isValid, message) = SnapshotComparer.CompareSnapshots(snapshot, actual);
+            var (isValid, message) = (ValueTuple<bool, string>) SnapshotComparer.CompareSnapshots(snapshot, actual);
             if (!isValid)
             {
                 SnapshotUpdater.TryUpdateSnapshot(path, actual, message);
             }
         }
 
-        public static void ShouldMatchInlineSnapshot(this object actual, string inlineSnapshot)
+        public static void ShouldMatchInlineSnapshot(dynamic actual, string inlineSnapshot)
         {
-            var (isValid, message) = SnapshotComparer.CompareSnapshots(inlineSnapshot, actual);
+            var (isValid, message) =
+                (ValueTuple<bool, string>) SnapshotComparer.CompareSnapshots(inlineSnapshot, actual);
             if (!isValid)
             {
                 throw new SnapshotMismatch(message);
             }
         }
 
-        public static void ShouldMatchObject(this object actual, object expected)
+        public static void ShouldMatchObject(dynamic actual, dynamic expected)
         {
-            var (isValid, message) = SnapshotComparer.CompareSnapshots(expected, actual);
+            var (isValid, message) = (ValueTuple<bool, string>) SnapshotComparer.CompareSnapshots(expected, actual);
             if (!isValid)
             {
                 throw new SnapshotMismatch(message);

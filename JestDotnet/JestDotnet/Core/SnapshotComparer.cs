@@ -29,7 +29,7 @@ namespace JestDotnet.Core
             return (isValid, message);
         }
 
-        private static string GetDiff(JToken expectedToken, JToken actualToken)
+        internal static string GetDiff(JToken expectedToken, JToken actualToken)
         {
             var diff = new JsonDiffPatch();
             var patch = diff.Diff(expectedToken, actualToken);

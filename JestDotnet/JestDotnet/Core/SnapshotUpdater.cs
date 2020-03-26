@@ -17,12 +17,12 @@ namespace JestDotnet.Core
 
             SnapshotResolver.StoreSnapshotData(path, actual);
         }
-        
+
         internal static void TryUpdateMissingSnapshot<T>(string path, T actual)
         {
             if (!ShouldUpdateIfEmpty())
             {
-                throw new SnapshotDoesNotExist($"Snapshot does not exist");
+                throw new SnapshotDoesNotExist("Snapshot does not exist");
             }
 
             SnapshotResolver.StoreSnapshotData(path, actual);

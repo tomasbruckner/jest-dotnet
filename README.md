@@ -21,6 +21,8 @@ Snapshots are not created if you are running tests inside Continuous Integration
 Library detects CI environment by check `CI` environment variable. If it is set to `true`, test fails if snapshot is missing.
 
 ## API
+
+## Extensions methods
 ### ShouldMatchSnapshot
 ```c#
 public static void ShouldMatchSnapshot(this object actual, string hint = "");
@@ -89,3 +91,79 @@ var expected = new Person
 
 actual.ShouldMatchObject(expected);
 ```
+
+## Methods
+If you don't like extension methods, you can use static class `JestAssert`
+
+### ShouldMatchSnapshot
+```c#
+public static void ShouldMatchSnapshot(object actual, string hint = "");
+```
+
+#### Example
+```c#
+var person = new Person
+{
+    Age = 13,
+    DateOfBirth = new DateTime(2008, 7, 7),
+    FirstName = "John",
+    LastName = "Bam"
+};
+
+JestAssert.ShouldMatchSnapshot(person);
+```
+
+### ShouldMatchInlineSnapshot
+```c#
+public static void ShouldMatchInlineSnapshot(object actual, string inlineSnapshot);
+```
+
+#### Example
+```c#
+var person = new Person
+{
+    Age = 13,
+    DateOfBirth = new DateTime(2008, 7, 7),
+    FirstName = "John",
+    LastName = "Bam"
+};
+
+JestAssert.ShouldMatchInlineSnapshot(person, @"
+    {
+        ""FirstName"": ""John"",
+        ""LastName"": ""Bam"",
+        ""DateOfBirth"": ""2008-07-07T00:00:00"",
+        ""Age"": 13,    
+    }"
+);
+```
+
+### ShouldMatchObject
+```c#
+public static void ShouldMatchObject(object actual, object expected);
+```
+
+#### Example
+```c#
+var actual = new Person
+{
+    Age = 13,
+    DateOfBirth = new DateTime(2008, 7, 7),
+    FirstName = "John",
+    LastName = "Bam"
+};
+
+var expected = new Person
+{
+    Age = 13,
+    DateOfBirth = new DateTime(2008, 7, 7),
+    FirstName = "John",
+    LastName = "Bam"
+};
+
+JestAssert.ShouldMatchObject(actual,expected);
+```
+
+## Caveats
+### Dynamic objects
+You cannot call neither extension nor `JestAssert` with `dynamic` object. You need to cast it to `object` (or real type).
