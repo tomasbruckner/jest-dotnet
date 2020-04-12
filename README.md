@@ -1,6 +1,9 @@
 # Jest Snapshot Dotnet
 Simple snapshot testing with inspiration from amazing [Jest](https://jestjs.io) library.
 
+## Installation
+You can install it using [Nuget](https://www.nuget.org/packages/JestDotnet/).
+
 ## How it works
 If you are unfamiliar with snapshot testing, I recommend you to check [Jest documentation](https://jestjs.io/docs/en/snapshot-testing).
  
