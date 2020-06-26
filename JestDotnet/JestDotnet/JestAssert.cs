@@ -2,6 +2,7 @@ using System;
 using System.Runtime.CompilerServices;
 using JestDotnet.Core;
 using JestDotnet.Core.Exceptions;
+using JestDotnet.Core.Settings;
 
 namespace JestDotnet
 {
@@ -14,7 +15,7 @@ namespace JestDotnet
             [CallerFilePath] string sourceFilePath = ""
         )
         {
-            var path = SnapshotResolver.CreatePath(sourceFilePath, memberName, hint);
+            var path = SnapshotSettings.CreatePath((sourceFilePath, memberName, hint));
             var snapshot = SnapshotResolver.GetSnapshotData(path);
 
             if (string.IsNullOrEmpty(snapshot))
