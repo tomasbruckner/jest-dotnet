@@ -1,5 +1,5 @@
 using System.IO;
-using Newtonsoft.Json.Linq;
+using JestDotnet.Core.Settings;
 
 namespace JestDotnet.Core
 {
@@ -12,16 +12,24 @@ namespace JestDotnet.Core
 
         internal static void StoreSnapshotData(string path, object actualObject)
         {
-            var serialized = JToken.FromObject(actualObject).ToString();
+            var jsonSerializer = SnapshotSettings.CreateJsonSerializer();
+            using var jsonWriter = SnapshotSettings.CreateJTokenWriter();
+            jsonSerializer.Serialize(jsonWriter, actualObject);
+            using var stringWriter = SnapshotSettings.CreateStringWriter();
+            using var jsonTextWriter = SnapshotSettings.CreateTextWriter(stringWriter);
+            jsonWriter.Token!.WriteTo(jsonTextWriter);
+            var serialized = stringWriter.ToString();
+
             Directory.CreateDirectory(Path.GetDirectoryName(path));
             File.WriteAllText(path, serialized);
         }
 
-        internal static string CreatePath(string sourceFilePath, string memberName, string hint)
+        internal static string CreatePath((string sourceFilePath, string memberName, string hint) args)
         {
-            var directoryName = $"{Path.GetDirectoryName(sourceFilePath)}/{SnapshotConstants.SnapshotDirectory}";
+            var (sourceFilePath, memberName, hint) = args;
+            var directoryName = $"{Path.GetDirectoryName(sourceFilePath)}/{SnapshotSettings.SnapshotDirectory}";
             var fileName =
-                $"{Path.GetFileNameWithoutExtension(sourceFilePath)}{memberName}{hint}{SnapshotConstants.SnapshotDotExtension}";
+                $"{Path.GetFileNameWithoutExtension(sourceFilePath)}{memberName}{hint}{SnapshotSettings.CreateSnapshotDotExtension()}";
 
             return $"{directoryName}/{fileName}";
         }

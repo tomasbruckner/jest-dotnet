@@ -164,6 +164,43 @@ var expected = new Person
 JestAssert.ShouldMatchObject(actual,expected);
 ```
 
+## Advanced
+### Configuring directory and file extensions
+If you need to configure it, you can use `SnapshotSettings` class to specify your own 
+* extension instead of `.snap` (use `SnapshotSettings.SnapshotExtension`)
+* directory instead of `__snapshots__` (use `SnapshotSettings.SnapshotDirectory`) 
+* function that generates directory, extension and filename (use `SnapshotSettings.CreatePath`)
+
+
+### Configuring serialization
+For serialization, I am using Json.NET. If you need to configure it, you can use `SnapshotSettings` class to specify your own 
+
+* `JsonSerializer` (use `SnapshotSettings.CreateJsonSerializer`)
+* `JTokenWriter` (use `SnapshotSettings.CreateJTokenWriter`)
+* `StringWriter` (use `SnapshotSettings.CreateStringWriter`) 
+* `JsonTextWriter` (use `SnapshotSettings.CreateJsonTextWriter`).
+
+ Popular use is to change line ending of the `.snap` files. For example if you want to set line ending to Linux `LF`, you can do it like this:
+
+```csharp
+SnapshotSettings.CreateStringWriter = () => new StringWriter(CultureInfo.InvariantCulture)
+{
+    NewLine = "\n"
+};
+
+var testObject = new Person
+{
+    Age = 13,
+    DateOfBirth = new DateTime(2008, 7, 7),
+    FirstName = "John",
+    LastName = "Bam"
+};
+
+JestAssert.ShouldMatchSnapshot(testObject);
+```
+
+`SnapshotSettings` expects you define your own function that returns new configured instance.
+
 ## Caveats
 ### Dynamic objects
 You cannot call neither extension nor `JestAssert` with `dynamic` object. You need to cast it to `object` (or real type).
