@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <TargetFramework>netcoreapp3.1</TargetFramework>
-        <Version>1.1.0</Version>
+        <Version>1.2.0</Version>
         <Authors>Tomas Bruckner</Authors>
         <RepositoryUrl>https://github.com/tomasbruckner/jest-dotnet</RepositoryUrl>
         <Description>Snapshot testing in C#. See Project Site for more details</Description>
