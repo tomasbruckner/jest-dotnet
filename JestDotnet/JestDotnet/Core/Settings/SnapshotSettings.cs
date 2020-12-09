@@ -31,8 +31,7 @@ namespace JestDotnet.Core.Settings
         /// <summary>
         ///     default snapshot dot extension creator
         /// </summary>
-        public static readonly Func<string> DefaultCreateSnapshotDotExtension =
-            () => $".{SnapshotExtension}";
+        public static readonly Func<string> DefaultCreateSnapshotDotExtension = () => $".{SnapshotExtension}";
 
         /// <summary>
         ///     snapshot dot extension creator
@@ -42,22 +41,19 @@ namespace JestDotnet.Core.Settings
         /// <summary>
         ///     default function that creates snapshot path
         /// </summary>
-        public static readonly Func<(string sourceFilePath, string memberName, string hint), string>
-            DefaultCreatePath =
-                SnapshotResolver.CreatePath;
+        public static readonly Func<(string sourceFilePath, string memberName, string hint), string> DefaultCreatePath =
+            SnapshotResolver.CreatePath;
 
         /// <summary>
         ///     function that creates snapshot path
         /// </summary>
-        public static Func<(string sourceFilePath, string memberName, string hint), string>
-            CreatePath =
-                DefaultCreatePath;
+        public static Func<(string sourceFilePath, string memberName, string hint), string> CreatePath =
+            DefaultCreatePath;
 
         /// <summary>
         ///     default JSON serializer creator
         /// </summary>
-        public static readonly Func<JsonSerializer> DefaultCreateJsonSerializer =
-            JsonSerializer.CreateDefault;
+        public static readonly Func<JsonSerializer> DefaultCreateJsonSerializer = JsonSerializer.CreateDefault;
 
         /// <summary>
         ///     JSON serializer creator
@@ -67,8 +63,7 @@ namespace JestDotnet.Core.Settings
         /// <summary>
         ///     default JToken writer creator
         /// </summary>
-        public static readonly Func<JTokenWriter> DefaultCreateJTokenWriter =
-            () => new JTokenWriter();
+        public static readonly Func<JTokenWriter> DefaultCreateJTokenWriter = () => new JTokenWriter();
 
         /// <summary>
         ///     JToken writer creator
@@ -89,25 +84,12 @@ namespace JestDotnet.Core.Settings
         /// <summary>
         ///     default text writer creator
         /// </summary>
-        public static readonly Func<StringWriter, JsonTextWriter> DefaultCreateTextWriter =
-            stringWriter =>
-                new JsonTextWriter(stringWriter) {Formatting = Formatting.Indented};
+        public static readonly Func<StringWriter, JsonTextWriter> DefaultCreateTextWriter = stringWriter =>
+            new JsonTextWriter(stringWriter) {Formatting = Formatting.Indented};
 
         /// <summary>
         ///     text writer creator
         /// </summary>
         public static Func<StringWriter, JsonTextWriter> CreateTextWriter = DefaultCreateTextWriter;
-
-        /// <summary>
-        ///     default stream writer creator
-        /// </summary>
-        public static Func<string, StreamWriter> DefaultCreateStreamWriter =
-            path => new StreamWriter(path, true);
-
-
-        /// <summary>
-        ///     stream writer creator
-        /// </summary>
-        public static Func<string, StreamWriter> CreateStreamWriter = DefaultCreateStreamWriter;
     }
 }

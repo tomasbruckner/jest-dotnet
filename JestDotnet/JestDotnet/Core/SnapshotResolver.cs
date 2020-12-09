@@ -21,18 +21,13 @@ namespace JestDotnet.Core
             var serialized = stringWriter.ToString();
 
             Directory.CreateDirectory(Path.GetDirectoryName(path));
-
-            using var sw = SnapshotSettings.CreateStreamWriter(path);
-            sw.Write(serialized);
+            File.WriteAllText(path, serialized);
         }
 
-        internal static string CreatePath(
-            (string sourceFilePath, string memberName, string hint) args
-        )
+        internal static string CreatePath((string sourceFilePath, string memberName, string hint) args)
         {
             var (sourceFilePath, memberName, hint) = args;
-            var directoryName =
-                $"{Path.GetDirectoryName(sourceFilePath)}/{SnapshotSettings.SnapshotDirectory}";
+            var directoryName = $"{Path.GetDirectoryName(sourceFilePath)}/{SnapshotSettings.SnapshotDirectory}";
             var fileName =
                 $"{Path.GetFileNameWithoutExtension(sourceFilePath)}{memberName}{hint}{SnapshotSettings.CreateSnapshotDotExtension()}";
 

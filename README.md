@@ -1,6 +1,9 @@
 # Jest Snapshot Dotnet
 Simple snapshot testing with inspiration from amazing [Jest](https://jestjs.io) library.
 
+## Installation
+You can install it using [Nuget](https://www.nuget.org/packages/JestDotnet/).
+
 ## How it works
 If you are unfamiliar with snapshot testing, I recommend you to check [Jest documentation](https://jestjs.io/docs/en/snapshot-testing).
  
@@ -171,6 +174,24 @@ If you need to configure it, you can use `SnapshotSettings` class to specify you
 * directory instead of `__snapshots__` (use `SnapshotSettings.SnapshotDirectory`) 
 * function that generates directory, extension and filename (use `SnapshotSettings.CreatePath`)
 
+Popular use is to change directory of the snapshot files. You can do it like this:
+
+```csharp
+SnapshotSettings.SnapshotDirectory = "__custom__";
+
+var testObject = new Person
+{
+    Age = 13,
+    DateOfBirth = new DateTime(2008, 7, 7),
+    FirstName = "John",
+    LastName = "Bam"
+};
+
+JestAssert.ShouldMatchSnapshot(testObject);
+
+// you can return it back using
+SnapshotSettings.SnapshotDirectory = SnapshotSettings.DefaultSnapshotDirectory;
+```
 
 ### Configuring serialization
 For serialization, I am using Json.NET. If you need to configure it, you can use `SnapshotSettings` class to specify your own 
@@ -180,7 +201,7 @@ For serialization, I am using Json.NET. If you need to configure it, you can use
 * `StringWriter` (use `SnapshotSettings.CreateStringWriter`) 
 * `JsonTextWriter` (use `SnapshotSettings.CreateJsonTextWriter`).
 
- Popular use is to change line ending of the `.snap` files. For example if you want to set line ending to Linux `LF`, you can do it like this:
+Popular use is to change line ending of the `.snap` files. For example if you want to set line ending to Linux `LF`, you can do it like this:
 
 ```csharp
 SnapshotSettings.CreateStringWriter = () => new StringWriter(CultureInfo.InvariantCulture)
