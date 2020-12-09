@@ -204,3 +204,8 @@ JestAssert.ShouldMatchSnapshot(testObject);
 ## Caveats
 ### Dynamic objects
 You cannot call neither extension nor `JestAssert` with `dynamic` object. You need to cast it to `object` (or real type).
+
+
+## Credits
+
+[Package icon](https://www.flaticon.com/free-icon/joker-hat_68335)
