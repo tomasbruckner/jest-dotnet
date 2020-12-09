@@ -1,0 +1,42 @@
+{
+  "Children": {
+    "first": {
+      "ReadOnlyDictionaryChildren": {
+        "key1": false,
+        "key2": true,
+        "very.very.very.very.very.very.very.very.very.very.very.very.very.long.key1": true,
+        "Рикроллинг": true,
+        "very.very.very.very.very.very.very.very.very.very.very.very.very.long.key3": true,
+        "very.very.very.very.very.very.very.very.very.very.very.very.very.long.key4": true,
+        "4": true
+      },
+      "IntValue": 312,
+      "StringValue1": "nested1",
+      "StringValue2": null,
+      "IntNullValue": null
+    },
+    "second": {
+      "ReadOnlyDictionaryChildren": {},
+      "IntValue": 312,
+      "StringValue1": "nested2",
+      "StringValue2": "x",
+      "IntNullValue": 4
+    },
+    "third": {
+      "ReadOnlyDictionaryChildren": null,
+      "IntValue": 312,
+      "StringValue1": "nested2",
+      "StringValue2": "x",
+      "IntNullValue": 4
+    }
+  },
+  "ChildObject": {
+    "IntValue": 33,
+    "StringValue": "child"
+  },
+  "BoolValue": false,
+  "IntValue": 123,
+  "DateTimeValue": "9999-12-31T23:59:59.9999999",
+  "StringValue": "",
+  "IntNullValue": null
+}

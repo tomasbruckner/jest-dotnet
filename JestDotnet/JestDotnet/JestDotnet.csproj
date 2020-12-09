@@ -1,22 +1,39 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netcoreapp3.1</TargetFramework>
-        <Version>1.2.0</Version>
+        <TargetFrameworks>net47;netcoreapp2.1;netcoreapp3.1;net50;netstandard2.0;netstandard2.1</TargetFrameworks>
+        <Version>1.3.1</Version>
         <Authors>Tomas Bruckner</Authors>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <RepositoryUrl>https://github.com/tomasbruckner/jest-dotnet</RepositoryUrl>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <NoWarn>1591;1573</NoWarn>
+        <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
         <Description>Snapshot testing in C#. See Project Site for more details</Description>
         <PackageProjectUrl>https://github.com/tomasbruckner/jest-dotnet</PackageProjectUrl>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <PackageTags>testing, test, snapshot, jest, json, xunit</PackageTags>
-        <LangVersion>latest</LangVersion>
+        <PackageIcon>jest.png</PackageIcon>
+        <PackageReleaseNotes>See https://github.com/tomasbruckner/jest-dotnet/releases</PackageReleaseNotes>
+        <PackageTags>testing;test;snapshot;jest;json;xunit;netcore;netstandard</PackageTags>
+        <PackageDescription>
+            Simple snapshot testing with inspiration from amazing Jest library.
+        </PackageDescription>
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <RepositoryUrl>git@github.com:tomasbruckner/jest-dotnet.git</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
         <IncludeSymbols>true</IncludeSymbols>
+        <Copyright>Copyright Tomas Bruckner 2020</Copyright>
+        <LangVersion>8.0</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="JsonDiffPatch.Net" Version="2.1.0" />
-      <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+        <None Include="..\jest.png" Pack="true" Visible="false" PackagePath=""/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="JsonDiffPatch.Net" Version="2.3.0"/>
+        <PackageReference Include="Microsoft.CSharp" Version="4.7.0"/>
+        <PackageReference Include="Newtonsoft.Json" Version="12.0.3"/>
     </ItemGroup>
 
 </Project>
