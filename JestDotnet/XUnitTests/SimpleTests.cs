@@ -99,7 +99,7 @@ namespace XUnitTests
     ""FirstName"": ""John"",
     ""LastName"": ""Bam"",
     ""DateOfBirth"": ""2008-07-07T00:00:00"",
-    ""Age"": 13,    
+    ""Age"": 13
 }"
             );
         }
@@ -122,7 +122,7 @@ namespace XUnitTests
     ""FirstName"": ""John"",
     ""LastName"": ""Bam"",
     ""DateOfBirth"": ""2008-07-07T00:00:00"",
-    ""Age"": 13,    
+    ""Age"": 13
 }"
             );
         }

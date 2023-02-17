@@ -168,6 +168,45 @@ JestAssert.ShouldMatchObject(actual,expected);
 ```
 
 ## Advanced
+### Excluding properties
+If you want to exclude some properties from the diff, you can use `SnapshotSettings` class to specify your own
+
+* diffing options (use `SnapshotSettings.CreateDiffOptions`)
+
+Example:
+```csharp
+SnapshotSettings.CreateDiffOptions = () => new JsonDiffOptions
+{
+    PropertyFilter = (s, context) => s != "LastName"
+};
+```
+or pass `JsonDiffOptions` as optional argument
+
+```csharp
+var actual = new Person
+{
+    Age = 13,
+    DateOfBirth = new DateTime(2008, 7, 7),
+    FirstName = "John",
+    LastName = "Bam"
+};
+
+var expected = new Person
+{
+    Age = 13,
+    DateOfBirth = new DateTime(2008, 7, 7),
+    FirstName = "John",
+    LastName = ""
+};
+
+// this does not throw an exception and the test completes successfully
+// property "LastName" is ignored from the diff
+JestAssert.ShouldMatchObject(actual,expected, new JsonDiffOptions
+{
+    PropertyFilter = (s, context) => s != "LastName"
+});
+```
+
 ### Configuring directory and file extensions
 If you need to configure it, you can use `SnapshotSettings` class to specify your own 
 * extension instead of `.snap` (use `SnapshotSettings.SnapshotExtension`)

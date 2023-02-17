@@ -1,6 +1,7 @@
 using System;
 using System.Globalization;
 using System.IO;
+using System.Text.Json.JsonDiffPatch;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -85,11 +86,21 @@ namespace JestDotnet.Core.Settings
         ///     default text writer creator
         /// </summary>
         public static readonly Func<StringWriter, JsonTextWriter> DefaultCreateTextWriter = stringWriter =>
-            new JsonTextWriter(stringWriter) {Formatting = Formatting.Indented};
+            new JsonTextWriter(stringWriter) { Formatting = Formatting.Indented };
 
         /// <summary>
         ///     text writer creator
         /// </summary>
         public static Func<StringWriter, JsonTextWriter> CreateTextWriter = DefaultCreateTextWriter;
+
+        /// <summary>
+        ///     default diff options creator
+        /// </summary>
+        public static readonly Func<JsonDiffOptions> DefaultCreateDiffOptions = () => null;
+
+        /// <summary>
+        ///     diff options creator
+        /// </summary>
+        public static Func<JsonDiffOptions> CreateDiffOptions = DefaultCreateDiffOptions;
     }
 }
