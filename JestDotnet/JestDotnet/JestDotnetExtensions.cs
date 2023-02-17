@@ -1,4 +1,5 @@
 using System.Runtime.CompilerServices;
+using System.Text.Json.JsonDiffPatch;
 using JestDotnet.Core;
 using JestDotnet.Core.Exceptions;
 using JestDotnet.Core.Settings;
@@ -10,6 +11,7 @@ namespace JestDotnet
         public static void ShouldMatchSnapshot(
             this object actual,
             string hint = "",
+            JsonDiffOptions diffOptions = null,
             [CallerMemberName] string memberName = "",
             [CallerFilePath] string sourceFilePath = ""
         )
@@ -23,25 +25,29 @@ namespace JestDotnet
                 return;
             }
 
-            var (isValid, message) = SnapshotComparer.CompareSnapshots(snapshot, actual);
+            var (isValid, message) = SnapshotComparer.CompareSnapshots(snapshot, actual, diffOptions);
             if (!isValid)
             {
                 SnapshotUpdater.TryUpdateSnapshot(path, actual, message);
             }
         }
 
-        public static void ShouldMatchInlineSnapshot(this object actual, string inlineSnapshot)
+        public static void ShouldMatchInlineSnapshot(
+            this object actual,
+            string inlineSnapshot,
+            JsonDiffOptions diffOptions = null
+        )
         {
-            var (isValid, message) = SnapshotComparer.CompareSnapshots(inlineSnapshot, actual);
+            var (isValid, message) = SnapshotComparer.CompareSnapshots(inlineSnapshot, actual, diffOptions);
             if (!isValid)
             {
                 throw new SnapshotMismatch(message);
             }
         }
 
-        public static void ShouldMatchObject(this object actual, object expected)
+        public static void ShouldMatchObject(this object actual, object expected, JsonDiffOptions diffOptions = null)
         {
-            var (isValid, message) = SnapshotComparer.CompareSnapshots(expected, actual);
+            var (isValid, message) = SnapshotComparer.CompareSnapshots(expected, actual, diffOptions);
             if (!isValid)
             {
                 throw new SnapshotMismatch(message);

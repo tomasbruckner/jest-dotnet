@@ -1,0 +1,9 @@
+{
+  "a": {
+    "exclude": -1,
+    "notExclude": 15
+  },
+  "exclude": {
+    "c": -1
+  }
+}
