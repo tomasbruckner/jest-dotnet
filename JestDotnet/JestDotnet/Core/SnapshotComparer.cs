@@ -1,9 +1,6 @@
-using System;
 using System.Text.Json.JsonDiffPatch;
 using System.Text.Json.Nodes;
 using JestDotnet.Core.Settings;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace JestDotnet.Core
 {
@@ -16,8 +13,8 @@ namespace JestDotnet.Core
         )
         {
             return Diff(
-                JsonConvert.SerializeObject(expectedObject),
-                JsonConvert.SerializeObject(actualObject),
+                Serializer.Serialize(expectedObject),
+                Serializer.Serialize(actualObject),
                 diffOptions
             );
         }
@@ -30,12 +27,12 @@ namespace JestDotnet.Core
         {
             return Diff(
                 serializedExpectedObject,
-                JsonConvert.SerializeObject(actualObject),
+                Serializer.Serialize(actualObject),
                 diffOptions
             );
         }
 
-        internal static (bool IsValid, string Message) Diff(
+        private static (bool IsValid, string Message) Diff(
             string expected,
             string actual,
             JsonDiffOptions diffOptions = null

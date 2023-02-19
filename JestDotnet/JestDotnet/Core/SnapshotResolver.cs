@@ -12,14 +12,7 @@ namespace JestDotnet.Core
 
         internal static void StoreSnapshotData(string path, object actualObject)
         {
-            var jsonSerializer = SnapshotSettings.CreateJsonSerializer();
-            using var jsonWriter = SnapshotSettings.CreateJTokenWriter();
-            jsonSerializer.Serialize(jsonWriter, actualObject);
-            using var stringWriter = SnapshotSettings.CreateStringWriter();
-            using var jsonTextWriter = SnapshotSettings.CreateTextWriter(stringWriter);
-            jsonWriter.Token!.WriteTo(jsonTextWriter);
-            var serialized = stringWriter.ToString();
-
+            var serialized = Serializer.Serialize(actualObject);
             Directory.CreateDirectory(Path.GetDirectoryName(path));
             File.WriteAllText(path, serialized);
         }
