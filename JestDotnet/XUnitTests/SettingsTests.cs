@@ -70,5 +70,43 @@ namespace XUnitTests
 
             JestAssert.ShouldMatchSnapshot(testObject);
         }
+
+        [Fact]
+        public void ShouldSortAlphabeticallySimple()
+        {
+            SnapshotSettings.CreateJsonSerializer = () =>
+            {
+                var serializer = SnapshotSettings.DefaultCreateJsonSerializer();
+                serializer.ContractResolver = new AlphabeticalPropertySortContractResolver();
+
+                return serializer;
+            };
+
+            var testObject = new Person
+            {
+                Age = 13,
+                DateOfBirth = new DateTime(2008, 7, 7),
+                FirstName = "John",
+                LastName = "Bam"
+            };
+
+            JestAssert.ShouldMatchSnapshot(testObject);
+        }
+
+        [Fact]
+        public void ShouldSortAlphabeticallyComplex()
+        {
+            SnapshotSettings.CreateJsonSerializer = () =>
+            {
+                var serializer = SnapshotSettings.DefaultCreateJsonSerializer();
+                serializer.ContractResolver = new AlphabeticalPropertySortContractResolver();
+
+                return serializer;
+            };
+
+            var testObject = DataGenerator.GenerateComplexObjectData();
+
+            JestAssert.ShouldMatchSnapshot(testObject);
+        }
     }
 }

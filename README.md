@@ -240,6 +240,8 @@ For serialization, I am using Json.NET. If you need to configure it, you can use
 * `StringWriter` (use `SnapshotSettings.CreateStringWriter`) 
 * `JsonTextWriter` (use `SnapshotSettings.CreateJsonTextWriter`).
 
+
+#### Change line endings to LF
 Popular use is to change line ending of the `.snap` files. For example if you want to set line ending to Linux `LF`, you can do it like this:
 
 ```csharp
@@ -260,6 +262,42 @@ JestAssert.ShouldMatchSnapshot(testObject);
 ```
 
 `SnapshotSettings` expects you define your own function that returns new configured instance.
+
+#### Sort properties alphabetically
+```csharp
+SnapshotSettings.CreateJsonSerializer = () =>
+{
+    var serializer = SnapshotSettings.DefaultCreateJsonSerializer();
+    serializer.ContractResolver = new AlphabeticalPropertySortContractResolver();
+
+    return serializer;
+};
+
+var testObject = new Person
+{
+    Age = 13,
+    DateOfBirth = new DateTime(2008, 7, 7),
+    FirstName = "John",
+    LastName = "Bam"
+};
+
+JestAssert.ShouldMatchSnapshot(testObject);
+```
+
+For Newtonsoft.Json, the resolver can look something like this
+
+```csharp
+public sealed class AlphabeticalPropertySortContractResolver : DefaultContractResolver
+{
+    protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization)
+    {
+        var properties = base.CreateProperties(type, memberSerialization);
+
+        return properties.OrderBy(p => p.PropertyName).ToList();
+    }
+}
+```
+
 
 ## Caveats
 ### Dynamic objects
