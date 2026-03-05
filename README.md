@@ -1,31 +1,48 @@
 # Jest Snapshot Dotnet
+
+[![CI](https://github.com/tomasbruckner/jest-dotnet/actions/workflows/ci.yml/badge.svg)](https://github.com/tomasbruckner/jest-dotnet/actions/workflows/ci.yml)
+
 Simple snapshot testing with inspiration from amazing [Jest](https://jestjs.io) library.
 
 ## Installation
-You can install it using [Nuget](https://www.nuget.org/packages/JestDotnet/).
+You can install it using [NuGet](https://www.nuget.org/packages/JestDotnet/).
+
+```
+dotnet add package JestDotnet
+```
+
+### Supported frameworks
+
+| Target | Version |
+|--------|---------|
+| .NET | 10.0, 8.0 |
 
 ## How it works
 If you are unfamiliar with snapshot testing, I recommend you to check [Jest documentation](https://jestjs.io/docs/en/snapshot-testing).
- 
- This library works very similarly. When you run `ShouldMatchSnapshot` for the first time, it will generate JSON snapshot of the serialization of the object.
- If you run it second time, it will check if the JSON serialization of the object is the same as the saved JSON snapshot.
- 
- It is important to `commit snapshots` with your code to the git.
+
+This library works very similarly. When you run `ShouldMatchSnapshot` for the first time, it will generate JSON snapshot of the serialization of the object.
+If you run it second time, it will check if the JSON serialization of the object is the same as the saved JSON snapshot.
+
+It is important to `commit snapshots` with your code to the git.
 
 ### Updating snapshots
 You can mass update snapshot (useful when you add new property to an object, change default value or remove a property).
 Simply set environment variable `UPDATE` to `true` and run the tests that you want to update. It will update all snapshots that have failed.
 
+```bash
+UPDATE=true dotnet test
+```
+
 If you are using JetBrains Rider, go to `Settings -> Build, Execution, Deployment -> Unit Testing -> Test Runner` and set it there.
 Remember to unset the variable again.
 
 ### Continuous Integration
-Snapshots are not created if you are running tests inside Continuous Integration environment (Gitlab CI, Jenkins, Teamcity, Azure/AWS Pipelines etc.).
-Library detects CI environment by check `CI` environment variable. If it is set to `true`, test fails if snapshot is missing.
+Snapshots are not created if you are running tests inside Continuous Integration environment (GitHub Actions, GitLab CI, Jenkins, Teamcity, Azure/AWS Pipelines etc.).
+Library detects CI environment by checking the `CI` environment variable. If it is set to `true`, test fails if snapshot is missing.
 
 ## API
 
-## Extensions methods
+## Extension methods
 ### ShouldMatchSnapshot
 ```c#
 public static void ShouldMatchSnapshot(this object actual, string hint = "");
@@ -64,7 +81,7 @@ person.ShouldMatchInlineSnapshot(@"
         ""FirstName"": ""John"",
         ""LastName"": ""Bam"",
         ""DateOfBirth"": ""2008-07-07T00:00:00"",
-        ""Age"": 13,    
+        ""Age"": 13,
     }"
 );
 ```
@@ -95,7 +112,7 @@ var expected = new Person
 actual.ShouldMatchObject(expected);
 ```
 
-## Methods
+## Static methods
 If you don't like extension methods, you can use static class `JestAssert`
 
 ### ShouldMatchSnapshot
@@ -136,7 +153,7 @@ JestAssert.ShouldMatchInlineSnapshot(person, @"
         ""FirstName"": ""John"",
         ""LastName"": ""Bam"",
         ""DateOfBirth"": ""2008-07-07T00:00:00"",
-        ""Age"": 13,    
+        ""Age"": 13,
     }"
 );
 ```
@@ -164,7 +181,7 @@ var expected = new Person
     LastName = "Bam"
 };
 
-JestAssert.ShouldMatchObject(actual,expected);
+JestAssert.ShouldMatchObject(actual, expected);
 ```
 
 ## Advanced
@@ -201,16 +218,16 @@ var expected = new Person
 
 // this does not throw an exception and the test completes successfully
 // property "LastName" is ignored from the diff
-JestAssert.ShouldMatchObject(actual,expected, new JsonDiffOptions
+JestAssert.ShouldMatchObject(actual, expected, new JsonDiffOptions
 {
     PropertyFilter = (s, context) => s != "LastName"
 });
 ```
 
 ### Configuring directory and file extensions
-If you need to configure it, you can use `SnapshotSettings` class to specify your own 
+If you need to configure it, you can use `SnapshotSettings` class to specify your own
 * extension instead of `.snap` (use `SnapshotSettings.SnapshotExtension`)
-* directory instead of `__snapshots__` (use `SnapshotSettings.SnapshotDirectory`) 
+* directory instead of `__snapshots__` (use `SnapshotSettings.SnapshotDirectory`)
 * function that generates directory, extension and filename (use `SnapshotSettings.CreatePath`)
 
 Popular use is to change directory of the snapshot files. You can do it like this:
@@ -233,12 +250,12 @@ SnapshotSettings.SnapshotDirectory = SnapshotSettings.DefaultSnapshotDirectory;
 ```
 
 ### Configuring serialization
-For serialization, I am using Json.NET. If you need to configure it, you can use `SnapshotSettings` class to specify your own 
+For serialization, Json.NET is used. If you need to configure it, you can use `SnapshotSettings` class to specify your own
 
 * `JsonSerializer` (use `SnapshotSettings.CreateJsonSerializer`)
 * `JTokenWriter` (use `SnapshotSettings.CreateJTokenWriter`)
-* `StringWriter` (use `SnapshotSettings.CreateStringWriter`) 
-* `JsonTextWriter` (use `SnapshotSettings.CreateJsonTextWriter`).
+* `StringWriter` (use `SnapshotSettings.CreateStringWriter`)
+* `JsonTextWriter` (use `SnapshotSettings.CreateJsonTextWriter`)
 
 
 #### Change line endings to LF

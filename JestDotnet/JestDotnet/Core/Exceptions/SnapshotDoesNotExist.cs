@@ -1,11 +1,10 @@
 using System;
 
-namespace JestDotnet.Core.Exceptions
+namespace JestDotnet.Core.Exceptions;
+
+public class SnapshotDoesNotExist : Exception
 {
-    public class SnapshotDoesNotExist : Exception
+    public SnapshotDoesNotExist(string message) : base(message)
     {
-        public SnapshotDoesNotExist(string message) : base(message)
-        {
-        }
     }
 }

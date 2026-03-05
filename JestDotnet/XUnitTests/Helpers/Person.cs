@@ -1,12 +1,11 @@
 using System;
 
-namespace XUnitTests.Helpers
+namespace XUnitTests.Helpers;
+
+public class Person
 {
-    public class Person
-    {
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public DateTime DateOfBirth { get; set; }
-        public int Age { get; set; }
-    }
+    public string? FirstName { get; set; }
+    public string? LastName { get; set; }
+    public DateTime DateOfBirth { get; set; }
+    public int Age { get; set; }
 }

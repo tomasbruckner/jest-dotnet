@@ -2,51 +2,60 @@ using System.Text.Json.JsonDiffPatch;
 using System.Text.Json.Nodes;
 using JestDotnet.Core.Settings;
 
-namespace JestDotnet.Core
+namespace JestDotnet.Core;
+
+internal static class SnapshotComparer
 {
-    internal static class SnapshotComparer
+    internal static (bool IsValid, string? Message) CompareSnapshots<T>(
+        T expectedObject,
+        T actualObject,
+        JsonDiffOptions? diffOptions = null
+    ) where T : notnull
     {
-        internal static (bool IsValid, string Message) CompareSnapshots<T>(
-            T expectedObject,
-            T actualObject,
-            JsonDiffOptions diffOptions = null
-        )
+        return Diff(
+            Serializer.Serialize(expectedObject),
+            Serializer.Serialize(actualObject),
+            diffOptions
+        );
+    }
+
+    internal static (bool IsValid, string? Message) CompareSnapshots<T>(
+        string serializedExpectedObject,
+        T actualObject,
+        JsonDiffOptions? diffOptions = null
+    ) where T : notnull
+    {
+        return Diff(
+            serializedExpectedObject,
+            Serializer.Serialize(actualObject),
+            diffOptions
+        );
+    }
+
+    private static (bool IsValid, string? Message) Diff(
+        string expected,
+        string actual,
+        JsonDiffOptions? diffOptions = null
+    )
+    {
+        var expectedNode = JsonNode.Parse(expected);
+        var actualNode = JsonNode.Parse(actual);
+
+        if (expectedNode == null && actualNode == null)
         {
-            return Diff(
-                Serializer.Serialize(expectedObject),
-                Serializer.Serialize(actualObject),
-                diffOptions
-            );
+            return (true, null);
         }
 
-        internal static (bool IsValid, string Message) CompareSnapshots<T>(
-            string serializedExpectedObject,
-            T actualObject,
-            JsonDiffOptions diffOptions = null
-        )
+        if (expectedNode == null || actualNode == null)
         {
-            return Diff(
-                serializedExpectedObject,
-                Serializer.Serialize(actualObject),
-                diffOptions
-            );
+            return (false, $"Expected {expected} but got {actual}");
         }
 
-        private static (bool IsValid, string Message) Diff(
-            string expected,
-            string actual,
-            JsonDiffOptions diffOptions = null
-        )
-        {
-            var expectedNode = JsonNode.Parse(expected);
-            var actualNode = JsonNode.Parse(actual);
+        var diff = expectedNode.Diff(
+            actualNode,
+            diffOptions ?? SnapshotSettings.CreateDiffOptions()
+        );
 
-            var diff = expectedNode.Diff(
-                actualNode,
-                diffOptions ?? SnapshotSettings.DefaultCreateDiffOptions()
-            );
-
-            return (diff == null, diff?.ToJsonString());
-        }
+        return (diff == null, diff?.ToJsonString());
     }
 }

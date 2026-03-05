@@ -1,19 +1,18 @@
-﻿using JestDotnet.Core.Settings;
+using JestDotnet.Core.Settings;
 
-namespace JestDotnet.Core
+namespace JestDotnet.Core;
+
+internal static class Serializer
 {
-    internal static class Serializer
+    internal static string Serialize(object obj)
     {
-        internal static string Serialize(object obj)
-        {
-            var jsonSerializer = SnapshotSettings.CreateJsonSerializer();
-            using var jsonWriter = SnapshotSettings.CreateJTokenWriter();
-            jsonSerializer.Serialize(jsonWriter, obj);
-            using var stringWriter = SnapshotSettings.CreateStringWriter();
-            using var jsonTextWriter = SnapshotSettings.CreateTextWriter(stringWriter);
-            jsonWriter.Token!.WriteTo(jsonTextWriter);
-            
-            return stringWriter.ToString();
-        }
+        var jsonSerializer = SnapshotSettings.CreateJsonSerializer();
+        using var jsonWriter = SnapshotSettings.CreateJTokenWriter();
+        jsonSerializer.Serialize(jsonWriter, obj);
+        using var stringWriter = SnapshotSettings.CreateStringWriter();
+        using var jsonTextWriter = SnapshotSettings.CreateTextWriter(stringWriter);
+        jsonWriter.Token!.WriteTo(jsonTextWriter);
+
+        return stringWriter.ToString();
     }
 }

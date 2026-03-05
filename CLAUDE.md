@@ -1,0 +1,52 @@
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+## Project Overview
+
+JestDotnet is a snapshot testing library for .NET, inspired by Jest. It serializes objects to JSON, saves snapshots to files, and compares against them on subsequent runs. Published on NuGet as `JestDotnet` (v1.5.0).
+
+## Git Workflow
+
+Never commit directly to `master`. Always create a feature branch for changes.
+
+## Build & Test Commands
+
+All commands run from `JestDotnet/` (the solution directory):
+
+```bash
+dotnet build                                          # Build all projects
+dotnet test                                           # Run all tests
+dotnet test --filter "SimpleTests.ShouldMatchSnapshot" # Run a single test
+UPDATE=true dotnet test                               # Update snapshots
+```
+
+## Architecture
+
+**Public API** — two equivalent entry points:
+- `JestAssert` — static methods: `ShouldMatchSnapshot`, `ShouldMatchInlineSnapshot`, `ShouldMatchObject`
+- `JestDotnetExtensions` — same methods as extension methods on `object`
+
+**Core pipeline** (`JestDotnet/Core/`):
+- `Serializer` — converts objects to JSON via Newtonsoft.Json
+- `SnapshotResolver` — reads/writes `.snap` files in `__snapshots__/` directories, derives path from test class filename + method name + optional hint
+- `SnapshotComparer` — diffs expected vs actual using `SystemTextJson.JsonDiffPatch`
+- `SnapshotUpdater` — orchestrates create/update/fail logic; checks `UPDATE` env var to update snapshots, `CI` env var to prevent snapshot creation in CI
+- `SnapshotSettings` — global static configuration (snapshot directory name, file extension, JSON serializer factory, diff options)
+
+**Snapshot behavior:**
+1. First run: creates snapshot file
+2. Subsequent runs: compares serialized object against saved snapshot
+3. Mismatch + `UPDATE=true`: overwrites snapshot
+4. Mismatch in CI (`CI=true`): throws `SnapshotMismatch`
+5. Missing snapshot in CI: throws `SnapshotDoesNotExist`
+
+## Key Configuration
+
+- Multi-targets: `net10.0`, `net8.0`
+- Language version: C# 14
+- Nullable reference types: enabled
+- `TreatWarningsAsErrors` is enabled (via `Directory.Build.props`)
+- Solution format: `.slnx`
+- Test framework: xUnit 2.9.3
+- Dependencies: Newtonsoft.Json 13.0.4, SystemTextJson.JsonDiffPatch 2.0.0

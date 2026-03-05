@@ -6,107 +6,106 @@ using JestDotnet.Core.Settings;
 using Xunit;
 using XUnitTests.Helpers;
 
-namespace XUnitTests
+namespace XUnitTests;
+
+public class SettingsTests
 {
-    public class SettingsTests
+    [Fact]
+    public void ShouldMatchCustomSnapExtension()
     {
-        [Fact]
-        public void ShouldMatchCustomSnapExtension()
+        SnapshotSettings.CreateStringWriter = () => new StringWriter(CultureInfo.InvariantCulture)
         {
-            SnapshotSettings.CreateStringWriter = () => new StringWriter(CultureInfo.InvariantCulture)
-            {
-                NewLine = "\n"
-            };
+            NewLine = "\n"
+        };
 
-            SnapshotSettings.SnapshotExtension = "snap2";
+        SnapshotSettings.SnapshotExtension = "snap2";
 
-            var testObject = new Person
-            {
-                Age = 13,
-                DateOfBirth = new DateTime(2008, 7, 7),
-                FirstName = "John",
-                LastName = "Bam"
-            };
-
-            JestAssert.ShouldMatchSnapshot(testObject);
-
-            SnapshotSettings.SnapshotExtension = SnapshotSettings.DefaultSnapshotExtension;
-        }
-
-        [Fact]
-        public void ShouldMatchLinuxLineEnding()
+        var testObject = new Person
         {
-            SnapshotSettings.CreateStringWriter = () => new StringWriter(CultureInfo.InvariantCulture)
-            {
-                NewLine = "\n"
-            };
+            Age = 13,
+            DateOfBirth = new DateTime(2008, 7, 7),
+            FirstName = "John",
+            LastName = "Bam"
+        };
 
-            var testObject = new Person
-            {
-                Age = 13,
-                DateOfBirth = new DateTime(2008, 7, 7),
-                FirstName = "John",
-                LastName = "Bam"
-            };
+        JestAssert.ShouldMatchSnapshot(testObject);
 
-            JestAssert.ShouldMatchSnapshot(testObject);
-        }
+        SnapshotSettings.SnapshotExtension = SnapshotSettings.DefaultSnapshotExtension;
+    }
 
-        [Fact]
-        public void ShouldMatchWindowsLineEnding()
+    [Fact]
+    public void ShouldMatchLinuxLineEnding()
+    {
+        SnapshotSettings.CreateStringWriter = () => new StringWriter(CultureInfo.InvariantCulture)
         {
-            SnapshotSettings.CreateStringWriter = () => new StringWriter(CultureInfo.InvariantCulture)
-            {
-                NewLine = "\r\n"
-            };
+            NewLine = "\n"
+        };
 
-            var testObject = new Person
-            {
-                Age = 13,
-                DateOfBirth = new DateTime(2008, 7, 7),
-                FirstName = "John",
-                LastName = "Bam"
-            };
-
-            JestAssert.ShouldMatchSnapshot(testObject);
-        }
-
-        [Fact]
-        public void ShouldSortAlphabeticallySimple()
+        var testObject = new Person
         {
-            SnapshotSettings.CreateJsonSerializer = () =>
-            {
-                var serializer = SnapshotSettings.DefaultCreateJsonSerializer();
-                serializer.ContractResolver = new AlphabeticalPropertySortContractResolver();
+            Age = 13,
+            DateOfBirth = new DateTime(2008, 7, 7),
+            FirstName = "John",
+            LastName = "Bam"
+        };
 
-                return serializer;
-            };
+        JestAssert.ShouldMatchSnapshot(testObject);
+    }
 
-            var testObject = new Person
-            {
-                Age = 13,
-                DateOfBirth = new DateTime(2008, 7, 7),
-                FirstName = "John",
-                LastName = "Bam"
-            };
-
-            JestAssert.ShouldMatchSnapshot(testObject);
-        }
-
-        [Fact]
-        public void ShouldSortAlphabeticallyComplex()
+    [Fact]
+    public void ShouldMatchWindowsLineEnding()
+    {
+        SnapshotSettings.CreateStringWriter = () => new StringWriter(CultureInfo.InvariantCulture)
         {
-            SnapshotSettings.CreateJsonSerializer = () =>
-            {
-                var serializer = SnapshotSettings.DefaultCreateJsonSerializer();
-                serializer.ContractResolver = new AlphabeticalPropertySortContractResolver();
+            NewLine = "\r\n"
+        };
 
-                return serializer;
-            };
+        var testObject = new Person
+        {
+            Age = 13,
+            DateOfBirth = new DateTime(2008, 7, 7),
+            FirstName = "John",
+            LastName = "Bam"
+        };
 
-            var testObject = DataGenerator.GenerateComplexObjectData();
+        JestAssert.ShouldMatchSnapshot(testObject);
+    }
 
-            JestAssert.ShouldMatchSnapshot(testObject);
-        }
+    [Fact]
+    public void ShouldSortAlphabeticallySimple()
+    {
+        SnapshotSettings.CreateJsonSerializer = () =>
+        {
+            var serializer = SnapshotSettings.DefaultCreateJsonSerializer();
+            serializer.ContractResolver = new AlphabeticalPropertySortContractResolver();
+
+            return serializer;
+        };
+
+        var testObject = new Person
+        {
+            Age = 13,
+            DateOfBirth = new DateTime(2008, 7, 7),
+            FirstName = "John",
+            LastName = "Bam"
+        };
+
+        JestAssert.ShouldMatchSnapshot(testObject);
+    }
+
+    [Fact]
+    public void ShouldSortAlphabeticallyComplex()
+    {
+        SnapshotSettings.CreateJsonSerializer = () =>
+        {
+            var serializer = SnapshotSettings.DefaultCreateJsonSerializer();
+            serializer.ContractResolver = new AlphabeticalPropertySortContractResolver();
+
+            return serializer;
+        };
+
+        var testObject = DataGenerator.GenerateComplexObjectData();
+
+        JestAssert.ShouldMatchSnapshot(testObject);
     }
 }
