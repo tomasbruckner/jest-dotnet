@@ -3,6 +3,7 @@ using System.Globalization;
 using System.IO;
 using JestDotnet;
 using JestDotnet.Core.Settings;
+using Newtonsoft.Json.Linq;
 using Xunit;
 using XUnitTests.Helpers;
 
@@ -107,5 +108,33 @@ public class SettingsTests
         var testObject = DataGenerator.GenerateComplexObjectData();
 
         JestAssert.ShouldMatchSnapshot(testObject);
+    }
+
+    [Fact]
+    public void ShouldSortJObjectAlphabetically()
+    {
+        SnapshotSettings.CreateJsonSerializer = () =>
+        {
+            var serializer = SnapshotSettings.DefaultCreateJsonSerializer();
+            serializer.ContractResolver = new AlphabeticalPropertySortContractResolver();
+            serializer.Converters.Add(new SortedJObjectConverter());
+
+            return serializer;
+        };
+
+        var testObject = new JObject
+        {
+            ["Zebra"] = 1,
+            ["Apple"] = 2,
+            ["Mango"] = new JObject
+            {
+                ["Zulu"] = "z",
+                ["Alpha"] = "a"
+            }
+        };
+
+        JestAssert.ShouldMatchSnapshot(testObject);
+
+        SnapshotSettings.CreateJsonSerializer = SnapshotSettings.DefaultCreateJsonSerializer;
     }
 }

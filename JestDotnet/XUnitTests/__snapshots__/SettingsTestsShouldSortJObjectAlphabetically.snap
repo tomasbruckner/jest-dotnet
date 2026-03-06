@@ -1,0 +1,8 @@
+{
+  "Apple": 2,
+  "Mango": {
+    "Alpha": "a",
+    "Zulu": "z"
+  },
+  "Zebra": 1
+}

@@ -315,6 +315,42 @@ public sealed class AlphabeticalPropertySortContractResolver : DefaultContractRe
 }
 ```
 
+For `JObject`, the `ContractResolver` does not apply because `JObject` is already a JSON token tree.
+You need to add a custom `JsonConverter` that sorts properties:
+
+```csharp
+public sealed class SortedJObjectConverter : JsonConverter<JObject>
+{
+    public override JObject ReadJson(JsonReader reader, Type objectType, JObject existingValue,
+        bool hasExistingValue, JsonSerializer serializer)
+    {
+        return JObject.Load(reader);
+    }
+
+    public override void WriteJson(JsonWriter writer, JObject value, JsonSerializer serializer)
+    {
+        writer.WriteStartObject();
+        foreach (var property in value.Properties().OrderBy(p => p.Name, StringComparer.Ordinal))
+        {
+            writer.WritePropertyName(property.Name);
+            serializer.Serialize(writer, property.Value);
+        }
+        writer.WriteEndObject();
+    }
+}
+```
+
+Then register both the resolver and converter:
+
+```csharp
+SnapshotSettings.CreateJsonSerializer = () =>
+{
+    var serializer = SnapshotSettings.DefaultCreateJsonSerializer();
+    serializer.ContractResolver = new AlphabeticalPropertySortContractResolver();
+    serializer.Converters.Add(new SortedJObjectConverter());
+    return serializer;
+};
+```
 
 ## Caveats
 ### Dynamic objects
