@@ -2,6 +2,7 @@ using System;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.JsonDiffPatch;
+using System.Text.Json.Serialization;
 using System.Text.Json.Serialization.Metadata;
 using System.Text.Unicode;
 
@@ -59,11 +60,11 @@ public static class SnapshotSettings
         {
             WriteIndented = true,
             Encoder = JavaScriptEncoder.Create(UnicodeRanges.All),
+            ReferenceHandler = ReferenceHandler.IgnoreCycles,
             TypeInfoResolver = new DefaultJsonTypeInfoResolver
             {
                 Modifiers = { AlphabeticalSortModifier.SortProperties }
             },
-            Converters = { new SortedDictionaryConverterFactory() },
         };
 
     /// <summary>

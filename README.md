@@ -275,12 +275,13 @@ JestAssert.ShouldMatchSnapshot(testObject);
 
 #### Sorting
 
-Properties and dictionary keys are sorted alphabetically by default using ordinal string comparison. This ensures deterministic, culture-independent snapshot output regardless of property declaration order or dictionary insertion order.
+Properties are sorted alphabetically by default using ordinal string comparison (`AlphabeticalSortModifier.SortProperties`). This ensures deterministic, culture-independent snapshot output regardless of property declaration order.
 
-- `AlphabeticalSortModifier.SortProperties` — sorts POCO properties
-- `SortedDictionaryConverterFactory` — sorts dictionary keys (all key types, compared as strings)
+> **Note:** When overriding `CreateSerializerOptions`, include `AlphabeticalSortModifier.SortProperties` in your `TypeInfoResolver` modifiers to keep the default sorting behavior. Also include `Encoder = JavaScriptEncoder.Create(UnicodeRanges.All)` to keep non-ASCII characters readable and `ReferenceHandler = ReferenceHandler.IgnoreCycles` to handle circular references.
 
-> **Note:** When overriding `CreateSerializerOptions`, include both `AlphabeticalSortModifier.SortProperties` in your `TypeInfoResolver` modifiers and `new SortedDictionaryConverterFactory()` in `Converters` to keep the default behavior. Also include `Encoder = JavaScriptEncoder.Create(UnicodeRanges.All)` to keep non-ASCII characters readable.
+#### Circular references
+
+Circular references are handled by default via `ReferenceHandler.IgnoreCycles` — cyclic references are serialized as `null` instead of throwing.
 
 ## Caveats
 ### Dynamic objects

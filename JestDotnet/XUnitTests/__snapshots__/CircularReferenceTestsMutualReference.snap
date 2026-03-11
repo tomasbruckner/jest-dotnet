@@ -1,0 +1,7 @@
+{
+  "Name": "A",
+  "Parent": {
+    "Name": "B",
+    "Parent": null
+  }
+}

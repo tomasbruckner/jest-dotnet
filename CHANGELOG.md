@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [2.1.0] - 2026-03-11
+
+### Changed
+- `ReferenceHandler.IgnoreCycles` enabled by default — circular references are serialized as `null` instead of throwing `JsonException`
+
+### Removed
+- `SortedDictionaryConverterFactory` — removed custom dictionary key sorting converter. POCO properties are still sorted alphabetically via `AlphabeticalSortModifier`. Dictionary and `JsonObject` keys now use their natural order (insertion order, or use `SortedDictionary<K,V>` for sorted keys).
+
+### Upgrade notes
+- Dictionary and `JsonObject` snapshots will change (keys use insertion order instead of sorted order). Run `UPDATE=true dotnet test` to regenerate snapshots after upgrading.
+
 ## [2.0.1] - 2026-03-11
 
 ### Changed

@@ -1,0 +1,12 @@
+{
+  "Level1": {
+    "Level2": {
+      "Level3": {
+        "B": 2,
+        "A": 1
+      },
+      "A": "first"
+    },
+    "A": "first"
+  }
+}

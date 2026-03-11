@@ -17,7 +17,6 @@ JestDotnet/
     ├── SnapshotUpdater.cs           # Create/update/fail orchestration
     ├── Settings/
     │   ├── AlphabeticalSortModifier.cs       # Default property sorting modifier
-    │   ├── SortedDictionaryConverterFactory.cs  # Default dictionary key sorting converter
     │   └── SnapshotSettings.cs              # Global configuration
     └── Exceptions/
         ├── SnapshotDoesNotExist.cs   # Thrown when snapshot missing in CI
@@ -61,7 +60,7 @@ Test calls ShouldMatchSnapshot(object)
 
 ### Serializer
 
-Converts objects to indented JSON using `System.Text.Json`. Uses `Utf8JsonWriter` for control over formatting (line endings, Unicode encoding). Properties are sorted alphabetically via `AlphabeticalSortModifier` and dictionary keys via `SortedDictionaryConverterFactory`, both using ordinal string comparison for culture-independent output. Configuration comes from `SnapshotSettings.CreateSerializerOptions`.
+Converts objects to indented JSON using `System.Text.Json`. Uses `Utf8JsonWriter` for control over formatting (line endings, Unicode encoding). Properties are sorted alphabetically via `AlphabeticalSortModifier` using ordinal string comparison for culture-independent output. Circular references are handled via `ReferenceHandler.IgnoreCycles` (cyclic references written as `null`). Configuration comes from `SnapshotSettings.CreateSerializerOptions`.
 
 ### SnapshotResolver
 
@@ -94,6 +93,38 @@ All settings live in `SnapshotSettings` as static properties. Each has a default
 | `CreateSerializerOptions` | `Func<JsonSerializerOptions>` | Indented, full Unicode | JSON serialization config |
 | `CreateDiffOptions` | `Func<JsonDiffOptions?>` | `null` | Diff/comparison config (e.g., property exclusion) |
 | `NewLine` | `string` | `"\n"` | Line ending in JSON output |
+
+## Exceptions
+
+JestDotnet can throw three categories of exceptions:
+
+### JestDotnet exceptions
+
+| Exception | When |
+|-----------|------|
+| `SnapshotDoesNotExist` | Snapshot file is missing and `CI=true` (prevents accidental snapshot creation in CI) |
+| `SnapshotMismatch` | Serialized object differs from saved snapshot (and `UPDATE` is not `true`) |
+
+### System.Text.Json exceptions
+
+JestDotnet does not catch serialization errors — they bubble up directly from `System.Text.Json`:
+
+| Exception | When | Example |
+|-----------|------|---------|
+| `JsonException` | Object graph exceeds max serialization depth (64) | 65+ levels of nested objects |
+| `NotSupportedException` | Type has no compatible JSON converter | Serializing `IntPtr`, `Span<T>`, or other unsupported types |
+
+### Circular references
+
+Circular references are handled gracefully by default. `ReferenceHandler.IgnoreCycles` is enabled in the default serializer options — cyclic references are written as `null` instead of throwing. This applies to all cycle patterns (self-reference, mutual reference, cycles through lists and dictionaries).
+
+```csharp
+var node = new Node { Name = "root" };
+node.Parent = node; // circular reference
+node.ShouldMatchSnapshot(); // works — Parent is serialized as null
+```
+
+`JsonObject` (`System.Text.Json.Nodes`) prevents cycles at the API level — adding a node that already has a parent throws `InvalidOperationException`.
 
 ## Dependencies
 

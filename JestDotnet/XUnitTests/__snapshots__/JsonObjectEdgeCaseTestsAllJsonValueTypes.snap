@@ -1,0 +1,8 @@
+{
+  "String": "hello",
+  "Number": 3.14,
+  "Integer": 42,
+  "BoolTrue": true,
+  "BoolFalse": false,
+  "Null": null
+}

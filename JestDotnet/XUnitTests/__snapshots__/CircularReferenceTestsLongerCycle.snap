@@ -1,0 +1,10 @@
+{
+  "Name": "A",
+  "Parent": {
+    "Name": "B",
+    "Parent": {
+      "Name": "C",
+      "Parent": null
+    }
+  }
+}
