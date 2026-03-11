@@ -4,13 +4,19 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [2.0.1] - 2026-03-11
+
+### Changed
+- Properties and dictionary keys are now sorted alphabetically by default (ordinal comparison) for deterministic, culture-independent snapshots
+- `AlphabeticalSortModifier` and `SortedDictionaryConverterFactory` shipped in the library
+- Publish workflow now creates GitHub releases with attached `.nupkg` files
+
 ## [2.0.0] - 2026-03-11
 
 ### Changed
 - **Serializer replaced:** Newtonsoft.Json removed in favor of System.Text.Json (STJ)
 - **Target framework:** Minimum target changed from `net8.0` to `net10.0` only
 - **Unicode in snapshots:** Non-ASCII characters (e.g., Cyrillic, CJK) are now rendered as literal UTF-8 instead of `\uXXXX` escape sequences, using `JavaScriptEncoder.Create(UnicodeRanges.All)`
-- **Alphabetical sorting:** Properties and dictionary keys are now sorted alphabetically by default (ordinal comparison) for deterministic, culture-independent snapshots
 
 ### Removed
 - `SnapshotSettings.CreateJsonSerializer` / `DefaultCreateJsonSerializer`
