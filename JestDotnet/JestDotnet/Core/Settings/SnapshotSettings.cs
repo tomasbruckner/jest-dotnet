@@ -1,9 +1,8 @@
 using System;
-using System.Globalization;
-using System.IO;
+using System.Text.Encodings.Web;
+using System.Text.Json;
 using System.Text.Json.JsonDiffPatch;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using System.Text.Unicode;
 
 namespace JestDotnet.Core.Settings;
 
@@ -52,46 +51,29 @@ public static class SnapshotSettings
         DefaultCreatePath;
 
     /// <summary>
-    ///     default JSON serializer creator
+    ///     default JSON serializer options creator
     /// </summary>
-    public static readonly Func<JsonSerializer> DefaultCreateJsonSerializer = JsonSerializer.CreateDefault;
+    public static readonly Func<JsonSerializerOptions> DefaultCreateSerializerOptions = () =>
+        new JsonSerializerOptions
+        {
+            WriteIndented = true,
+            Encoder = JavaScriptEncoder.Create(UnicodeRanges.All),
+        };
 
     /// <summary>
-    ///     JSON serializer creator
+    ///     JSON serializer options creator
     /// </summary>
-    public static Func<JsonSerializer> CreateJsonSerializer = DefaultCreateJsonSerializer;
+    public static Func<JsonSerializerOptions> CreateSerializerOptions = DefaultCreateSerializerOptions;
 
     /// <summary>
-    ///     default JToken writer creator
+    ///     default newline string
     /// </summary>
-    public static readonly Func<JTokenWriter> DefaultCreateJTokenWriter = () => new JTokenWriter();
+    public const string DefaultNewLine = "\n";
 
     /// <summary>
-    ///     JToken writer creator
+    ///     newline string used in JSON output
     /// </summary>
-    public static Func<JTokenWriter> CreateJTokenWriter = DefaultCreateJTokenWriter;
-
-    /// <summary>
-    ///     default string writer creator
-    /// </summary>
-    public static readonly Func<StringWriter> DefaultCreateStringWriter =
-        () => new StringWriter(CultureInfo.InvariantCulture);
-
-    /// <summary>
-    ///     string writer creator
-    /// </summary>
-    public static Func<StringWriter> CreateStringWriter = DefaultCreateStringWriter;
-
-    /// <summary>
-    ///     default text writer creator
-    /// </summary>
-    public static readonly Func<StringWriter, JsonTextWriter> DefaultCreateTextWriter = stringWriter =>
-        new JsonTextWriter(stringWriter) { Formatting = Formatting.Indented };
-
-    /// <summary>
-    ///     text writer creator
-    /// </summary>
-    public static Func<StringWriter, JsonTextWriter> CreateTextWriter = DefaultCreateTextWriter;
+    public static string NewLine = DefaultNewLine;
 
     /// <summary>
     ///     default diff options creator

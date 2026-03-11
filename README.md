@@ -15,7 +15,7 @@ dotnet add package JestDotnet
 
 | Target | Version |
 |--------|---------|
-| .NET | 10.0, 8.0 |
+| .NET | 10.0 |
 
 ## How it works
 If you are unfamiliar with snapshot testing, I recommend you to check [Jest documentation](https://jestjs.io/docs/en/snapshot-testing).
@@ -250,22 +250,17 @@ SnapshotSettings.SnapshotDirectory = SnapshotSettings.DefaultSnapshotDirectory;
 ```
 
 ### Configuring serialization
-For serialization, Json.NET is used. If you need to configure it, you can use `SnapshotSettings` class to specify your own
+For serialization, System.Text.Json is used. By default, snapshots are written with indented formatting and non-ASCII characters are preserved as literal UTF-8 (using `JavaScriptEncoder.Create(UnicodeRanges.All)`).
 
-* `JsonSerializer` (use `SnapshotSettings.CreateJsonSerializer`)
-* `JTokenWriter` (use `SnapshotSettings.CreateJTokenWriter`)
-* `StringWriter` (use `SnapshotSettings.CreateStringWriter`)
-* `JsonTextWriter` (use `SnapshotSettings.CreateJsonTextWriter`)
+If you need to configure it, you can use `SnapshotSettings` class to specify your own
 
+* `JsonSerializerOptions` (use `SnapshotSettings.CreateSerializerOptions`)
 
 #### Change line endings to LF
 Popular use is to change line ending of the `.snap` files. For example if you want to set line ending to Linux `LF`, you can do it like this:
 
 ```csharp
-SnapshotSettings.CreateStringWriter = () => new StringWriter(CultureInfo.InvariantCulture)
-{
-    NewLine = "\n"
-};
+SnapshotSettings.NewLine = "\n";
 
 var testObject = new Person
 {
@@ -277,17 +272,20 @@ var testObject = new Person
 
 JestAssert.ShouldMatchSnapshot(testObject);
 ```
-
-`SnapshotSettings` expects you define your own function that returns new configured instance.
 
 #### Sort properties alphabetically
-```csharp
-SnapshotSettings.CreateJsonSerializer = () =>
-{
-    var serializer = SnapshotSettings.DefaultCreateJsonSerializer();
-    serializer.ContractResolver = new AlphabeticalPropertySortContractResolver();
 
-    return serializer;
+> **Note:** When overriding `CreateSerializerOptions`, make sure to include `Encoder = JavaScriptEncoder.Create(UnicodeRanges.All)` to keep non-ASCII characters readable in snapshots. Without it, characters like Cyrillic or CJK will be written as `\uXXXX` escape sequences.
+
+```csharp
+SnapshotSettings.CreateSerializerOptions = () => new JsonSerializerOptions
+{
+    WriteIndented = true,
+    Encoder = JavaScriptEncoder.Create(UnicodeRanges.All),
+    TypeInfoResolver = new DefaultJsonTypeInfoResolver
+    {
+        Modifiers = { AlphabeticalSortModifier.SortProperties }
+    },
 };
 
 var testObject = new Person
@@ -301,55 +299,26 @@ var testObject = new Person
 JestAssert.ShouldMatchSnapshot(testObject);
 ```
 
-For Newtonsoft.Json, the resolver can look something like this
+The modifier can look something like this:
 
 ```csharp
-public sealed class AlphabeticalPropertySortContractResolver : DefaultContractResolver
+public static class AlphabeticalSortModifier
 {
-    protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization)
+    public static void SortProperties(JsonTypeInfo typeInfo)
     {
-        var properties = base.CreateProperties(type, memberSerialization);
-
-        return properties.OrderBy(p => p.PropertyName).ToList();
-    }
-}
-```
-
-For `JObject`, the `ContractResolver` does not apply because `JObject` is already a JSON token tree.
-You need to add a custom `JsonConverter` that sorts properties:
-
-```csharp
-public sealed class SortedJObjectConverter : JsonConverter<JObject>
-{
-    public override JObject ReadJson(JsonReader reader, Type objectType, JObject existingValue,
-        bool hasExistingValue, JsonSerializer serializer)
-    {
-        return JObject.Load(reader);
-    }
-
-    public override void WriteJson(JsonWriter writer, JObject value, JsonSerializer serializer)
-    {
-        writer.WriteStartObject();
-        foreach (var property in value.Properties().OrderBy(p => p.Name, StringComparer.Ordinal))
+        if (typeInfo.Kind != JsonTypeInfoKind.Object)
         {
-            writer.WritePropertyName(property.Name);
-            serializer.Serialize(writer, property.Value);
+            return;
         }
-        writer.WriteEndObject();
+
+        var sortedProperties = typeInfo.Properties.OrderBy(p => p.Name).ToList();
+
+        for (var i = 0; i < sortedProperties.Count; i++)
+        {
+            sortedProperties[i].Order = i;
+        }
     }
 }
-```
-
-Then register both the resolver and converter:
-
-```csharp
-SnapshotSettings.CreateJsonSerializer = () =>
-{
-    var serializer = SnapshotSettings.DefaultCreateJsonSerializer();
-    serializer.ContractResolver = new AlphabeticalPropertySortContractResolver();
-    serializer.Converters.Add(new SortedJObjectConverter());
-    return serializer;
-};
 ```
 
 ## Caveats

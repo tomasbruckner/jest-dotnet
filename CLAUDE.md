@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-JestDotnet is a snapshot testing library for .NET, inspired by Jest. It serializes objects to JSON, saves snapshots to files, and compares against them on subsequent runs. Published on NuGet as `JestDotnet` (v1.5.0).
+JestDotnet is a snapshot testing library for .NET, inspired by Jest. It serializes objects to JSON, saves snapshots to files, and compares against them on subsequent runs. Published on NuGet as `JestDotnet` (v2.0.0).
 
 ## Git Workflow
 
@@ -28,7 +28,7 @@ UPDATE=true dotnet test                               # Update snapshots
 - `JestDotnetExtensions` — same methods as extension methods on `object`
 
 **Core pipeline** (`JestDotnet/Core/`):
-- `Serializer` — converts objects to JSON via Newtonsoft.Json
+- `Serializer` — converts objects to JSON via System.Text.Json
 - `SnapshotResolver` — reads/writes `.snap` files in `__snapshots__/` directories, derives path from test class filename + method name + optional hint
 - `SnapshotComparer` — diffs expected vs actual using `SystemTextJson.JsonDiffPatch`
 - `SnapshotUpdater` — orchestrates create/update/fail logic; checks `UPDATE` env var to update snapshots, `CI` env var to prevent snapshot creation in CI
@@ -43,10 +43,10 @@ UPDATE=true dotnet test                               # Update snapshots
 
 ## Key Configuration
 
-- Multi-targets: `net10.0`, `net8.0`
+- Target framework: `net10.0`
 - Language version: C# 14
 - Nullable reference types: enabled
 - `TreatWarningsAsErrors` is enabled (via `Directory.Build.props`)
 - Solution format: `.slnx`
 - Test framework: xUnit 2.9.3
-- Dependencies: Newtonsoft.Json 13.0.4, SystemTextJson.JsonDiffPatch 2.0.0
+- Dependencies: System.Text.Json, SystemTextJson.JsonDiffPatch 2.0.0
