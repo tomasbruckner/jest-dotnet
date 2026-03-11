@@ -1,10 +1,17 @@
+using System;
 using System.Linq;
 using System.Text.Json.Serialization.Metadata;
 
-namespace XUnitTests.Helpers;
+namespace JestDotnet.Core.Settings;
 
+/// <summary>
+///     Sorts JSON properties alphabetically by name
+/// </summary>
 public static class AlphabeticalSortModifier
 {
+    /// <summary>
+    ///     Modifier that sorts properties alphabetically. Use with DefaultJsonTypeInfoResolver.Modifiers.
+    /// </summary>
     public static void SortProperties(JsonTypeInfo typeInfo)
     {
         if (typeInfo.Kind != JsonTypeInfoKind.Object)
@@ -12,7 +19,7 @@ public static class AlphabeticalSortModifier
             return;
         }
 
-        var sortedProperties = typeInfo.Properties.OrderBy(p => p.Name).ToList();
+        var sortedProperties = typeInfo.Properties.OrderBy(p => p.Name, StringComparer.Ordinal).ToList();
 
         for (var i = 0; i < sortedProperties.Count; i++)
         {

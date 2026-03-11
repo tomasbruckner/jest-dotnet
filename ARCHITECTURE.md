@@ -16,7 +16,9 @@ JestDotnet/
     ├── SnapshotComparer.cs          # JSON diff comparison
     ├── SnapshotUpdater.cs           # Create/update/fail orchestration
     ├── Settings/
-    │   └── SnapshotSettings.cs      # Global configuration
+    │   ├── AlphabeticalSortModifier.cs       # Default property sorting modifier
+    │   ├── SortedDictionaryConverterFactory.cs  # Default dictionary key sorting converter
+    │   └── SnapshotSettings.cs              # Global configuration
     └── Exceptions/
         ├── SnapshotDoesNotExist.cs   # Thrown when snapshot missing in CI
         └── SnapshotMismatch.cs       # Thrown when snapshot doesn't match
@@ -59,7 +61,7 @@ Test calls ShouldMatchSnapshot(object)
 
 ### Serializer
 
-Converts objects to indented JSON using `System.Text.Json`. Uses `Utf8JsonWriter` for control over formatting (line endings, Unicode encoding). Configuration comes from `SnapshotSettings.CreateSerializerOptions`.
+Converts objects to indented JSON using `System.Text.Json`. Uses `Utf8JsonWriter` for control over formatting (line endings, Unicode encoding). Properties are sorted alphabetically via `AlphabeticalSortModifier` and dictionary keys via `SortedDictionaryConverterFactory`, both using ordinal string comparison for culture-independent output. Configuration comes from `SnapshotSettings.CreateSerializerOptions`.
 
 ### SnapshotResolver
 

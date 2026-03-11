@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - **Serializer replaced:** Newtonsoft.Json removed in favor of System.Text.Json (STJ)
 - **Target framework:** Minimum target changed from `net8.0` to `net10.0` only
 - **Unicode in snapshots:** Non-ASCII characters (e.g., Cyrillic, CJK) are now rendered as literal UTF-8 instead of `\uXXXX` escape sequences, using `JavaScriptEncoder.Create(UnicodeRanges.All)`
+- **Alphabetical sorting:** Properties and dictionary keys are now sorted alphabetically by default (ordinal comparison) for deterministic, culture-independent snapshots
 
 ### Removed
 - `SnapshotSettings.CreateJsonSerializer` / `DefaultCreateJsonSerializer`

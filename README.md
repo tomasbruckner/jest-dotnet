@@ -273,53 +273,14 @@ var testObject = new Person
 JestAssert.ShouldMatchSnapshot(testObject);
 ```
 
-#### Sort properties alphabetically
+#### Sorting
 
-> **Note:** When overriding `CreateSerializerOptions`, make sure to include `Encoder = JavaScriptEncoder.Create(UnicodeRanges.All)` to keep non-ASCII characters readable in snapshots. Without it, characters like Cyrillic or CJK will be written as `\uXXXX` escape sequences.
+Properties and dictionary keys are sorted alphabetically by default using ordinal string comparison. This ensures deterministic, culture-independent snapshot output regardless of property declaration order or dictionary insertion order.
 
-```csharp
-SnapshotSettings.CreateSerializerOptions = () => new JsonSerializerOptions
-{
-    WriteIndented = true,
-    Encoder = JavaScriptEncoder.Create(UnicodeRanges.All),
-    TypeInfoResolver = new DefaultJsonTypeInfoResolver
-    {
-        Modifiers = { AlphabeticalSortModifier.SortProperties }
-    },
-};
+- `AlphabeticalSortModifier.SortProperties` — sorts POCO properties
+- `SortedDictionaryConverterFactory` — sorts dictionary keys (all key types, compared as strings)
 
-var testObject = new Person
-{
-    Age = 13,
-    DateOfBirth = new DateTime(2008, 7, 7),
-    FirstName = "John",
-    LastName = "Bam"
-};
-
-JestAssert.ShouldMatchSnapshot(testObject);
-```
-
-The modifier can look something like this:
-
-```csharp
-public static class AlphabeticalSortModifier
-{
-    public static void SortProperties(JsonTypeInfo typeInfo)
-    {
-        if (typeInfo.Kind != JsonTypeInfoKind.Object)
-        {
-            return;
-        }
-
-        var sortedProperties = typeInfo.Properties.OrderBy(p => p.Name).ToList();
-
-        for (var i = 0; i < sortedProperties.Count; i++)
-        {
-            sortedProperties[i].Order = i;
-        }
-    }
-}
-```
+> **Note:** When overriding `CreateSerializerOptions`, include both `AlphabeticalSortModifier.SortProperties` in your `TypeInfoResolver` modifiers and `new SortedDictionaryConverterFactory()` in `Converters` to keep the default behavior. Also include `Encoder = JavaScriptEncoder.Create(UnicodeRanges.All)` to keep non-ASCII characters readable.
 
 ## Caveats
 ### Dynamic objects

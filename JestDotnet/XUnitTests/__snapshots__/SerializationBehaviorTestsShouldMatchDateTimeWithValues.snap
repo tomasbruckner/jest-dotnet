@@ -1,6 +1,6 @@
 {
   "DateTime": "2024-12-31T23:59:59.999",
-  "NullableDateTime": "2020-01-01T00:00:00",
   "DateTimeOffset": "2024-06-15T00:00:00+00:00",
+  "NullableDateTime": "2020-01-01T00:00:00",
   "NullableDateTimeOffset": "2024-06-15T14:30:45-05:00"
 }
