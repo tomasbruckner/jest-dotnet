@@ -27,15 +27,15 @@ UPDATE=true dotnet test
 ## Making Changes
 
 1. Fork the repository
-2. Create a feature branch from `master` (`git checkout -b my-feature`)
+2. Create a feature branch from `main` (`git checkout -b my-feature`)
 3. Make your changes
 4. Ensure all tests pass (`dotnet test` from `JestDotnet/`)
 5. Commit your changes
-6. Push to your fork and open a Pull Request against `master`
+6. Push to your fork and open a Pull Request against `main`
 
 ## Guidelines
 
-- Do not commit directly to `master`
+- Do not commit directly to `main`
 - Keep PRs focused — one feature or fix per PR
 - Add tests for new functionality
 - `TreatWarningsAsErrors` is enabled — fix all warnings before submitting

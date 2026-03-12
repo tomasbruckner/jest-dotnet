@@ -8,7 +8,7 @@ JestDotnet is a snapshot testing library for .NET, inspired by Jest. It serializ
 
 ## Git Workflow
 
-Never commit directly to `master`. Always create a feature branch for changes.
+Never commit directly to `main`. Always create a feature branch for changes.
 
 ## Build & Test Commands
 
