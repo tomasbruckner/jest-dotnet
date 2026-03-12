@@ -1,4 +1,6 @@
+using System;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
@@ -8,6 +10,28 @@ namespace JestDotnet.Core;
 
 internal static class Serializer
 {
+    internal static void SortJsonNode(JsonNode? node)
+    {
+        switch (node)
+        {
+            case JsonObject obj:
+                var sorted = obj.OrderBy(p => p.Key, StringComparer.Ordinal).ToList();
+                obj.Clear();
+                foreach (var (key, value) in sorted)
+                {
+                    obj.Add(key, value);
+                    SortJsonNode(value);
+                }
+                break;
+            case JsonArray arr:
+                foreach (var element in arr)
+                {
+                    SortJsonNode(element);
+                }
+                break;
+        }
+    }
+
     internal static string Serialize(object? obj)
     {
         var options = SnapshotSettings.CreateSerializerOptions();
