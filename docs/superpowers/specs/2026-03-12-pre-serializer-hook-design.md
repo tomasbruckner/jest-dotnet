@@ -45,9 +45,11 @@ New pipeline:
 
 ## Behavior Details
 
-- **Type matching:** Exact runtime type match via `obj.GetType()`. No base type or interface walking.
-- **Key ordering:** Preserved as-is from the pre-serializer output. This is consistent with how STJ's own `JsonNode` types behave in the current codebase (insertion order, not alphabetically sorted).
+- **Type matching:** Exact runtime type match via `obj.GetType()`. No base type or interface walking. Users should register each concrete type they use (e.g., register `JObject` and `JArray` separately — registering `JToken` will not match `JObject` instances).
+- **Key ordering:** Preserved as-is from the pre-serializer output. This is consistent with how STJ's own `JsonNode` types behave in the current codebase (insertion order, not alphabetically sorted). Note: regular POCOs get alphabetically sorted keys via `AlphabeticalSortModifier`. If a user switches from direct STJ serialization to a pre-serializer for the same type, key order may change, requiring a snapshot update.
 - **Re-serialization through STJ:** The parsed `JsonNode` is serialized using the configured `JsonSerializerOptions`, ensuring consistent formatting (indentation, encoding, line endings) regardless of what the pre-serializer produces.
+- **Error handling:** If the user-supplied function returns invalid JSON, `JsonNode.Parse()` will throw a `JsonException`. This exception propagates as-is — the library does not wrap or suppress it.
+- **All public API paths affected:** `ShouldMatchSnapshot`, `ShouldMatchInlineSnapshot`, and `ShouldMatchObject` all call `Serializer.Serialize` internally. Pre-serializers apply to all three, including both sides of `ShouldMatchObject`.
 - **Thread safety:** The pre-serializer dictionary is static mutable state, same as the existing `SnapshotSettings` fields. No additional thread-safety guarantees beyond what already exists.
 
 ## Storage
@@ -62,8 +64,8 @@ private static readonly Dictionary<Type, Func<object, string>> PreSerializers = 
 
 ## Files Changed
 
-- `JestDotnet/Core/Settings/SnapshotSettings.cs` — add `PreSerializers` dictionary, `AddPreSerializer<T>()`, `ClearPreSerializers()`, and a method to look up and invoke a pre-serializer
-- `JestDotnet/Core/Serializer.cs` — check for pre-serializer before STJ serialization; if found, call it, parse result as `JsonNode`, serialize the node
+- `JestDotnet/JestDotnet/Core/Settings/SnapshotSettings.cs` — add `PreSerializers` dictionary, `AddPreSerializer<T>()`, `ClearPreSerializers()`, and a method to look up and invoke a pre-serializer
+- `JestDotnet/JestDotnet/Core/Serializer.cs` — check for pre-serializer before STJ serialization; if found, call it, parse result as `JsonNode`, serialize the node
 
 ## No New Dependencies
 
