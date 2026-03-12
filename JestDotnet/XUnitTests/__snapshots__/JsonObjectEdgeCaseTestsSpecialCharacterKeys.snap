@@ -1,7 +1,7 @@
 {
+  "": 5,
   "key with spaces": 1,
   "key-with-dashes": 2,
   "key.with.dots": 3,
-  "key_with_underscores": 4,
-  "": 5
+  "key_with_underscores": 4
 }

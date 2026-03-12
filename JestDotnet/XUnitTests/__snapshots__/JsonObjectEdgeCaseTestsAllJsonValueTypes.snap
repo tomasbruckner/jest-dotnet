@@ -1,8 +1,8 @@
 {
-  "String": "hello",
-  "Number": 3.14,
-  "Integer": 42,
-  "BoolTrue": true,
   "BoolFalse": false,
-  "Null": null
+  "BoolTrue": true,
+  "Integer": 42,
+  "Null": null,
+  "Number": 3.14,
+  "String": "hello"
 }

@@ -1,12 +1,12 @@
 {
   "Level1": {
+    "A": "first",
     "Level2": {
+      "A": "first",
       "Level3": {
-        "B": 2,
-        "A": 1
-      },
-      "A": "first"
-    },
-    "A": "first"
+        "A": 1,
+        "B": 2
+      }
+    }
   }
 }
