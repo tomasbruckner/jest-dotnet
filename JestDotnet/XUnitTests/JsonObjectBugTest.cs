@@ -19,7 +19,7 @@ public class JsonObjectBugTest
     }
 
     [Fact]
-    public void JsonObjectKeysUseInsertionOrder()
+    public void JsonObjectKeysShouldBeSortedAlphabetically()
     {
         var obj = new JsonObject
         {
@@ -32,7 +32,7 @@ public class JsonObjectBugTest
     }
 
     [Fact]
-    public void NestedJsonObjectKeysUseInsertionOrder()
+    public void NestedJsonObjectKeysShouldBeSortedAlphabetically()
     {
         var obj = new JsonObject
         {

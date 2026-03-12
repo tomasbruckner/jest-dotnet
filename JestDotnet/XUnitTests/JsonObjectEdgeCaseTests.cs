@@ -221,7 +221,7 @@ public class JsonObjectEdgeCaseTests
     [Fact]
     public void LargeNumberOfKeys()
     {
-        // Keys inserted in reverse order to verify insertion-order preservation (not sorted)
+        // Keys inserted in reverse order — sorted alphabetically regardless of insertion order
         var obj = new JsonObject();
         for (var i = 99; i >= 0; i--)
         {

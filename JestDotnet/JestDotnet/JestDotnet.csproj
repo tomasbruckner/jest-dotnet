@@ -30,11 +30,11 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="SystemTextJson.JsonDiffPatch" Version="2.0.0" />
+        <InternalsVisibleTo Include="XUnitTests" />
     </ItemGroup>
 
     <ItemGroup>
-        <InternalsVisibleTo Include="XUnitTests" />
+        <PackageReference Include="SystemTextJson.JsonDiffPatch" Version="2.0.0" />
     </ItemGroup>
 
 </Project>
