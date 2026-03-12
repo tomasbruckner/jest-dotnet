@@ -60,4 +60,28 @@ public class SortJsonNodeTests
         // Should not throw
         Serializer.SortJsonNode(node);
     }
+
+    [Fact]
+    public void SerializeSortsJsonObjectKeysAlphabetically()
+    {
+        var obj = new JsonObject
+        {
+            ["zebra"] = 1,
+            ["apple"] = 2,
+            ["mango"] = 3,
+        };
+
+        var result = Serializer.Serialize(obj);
+
+        Assert.Contains("\"apple\"", result);
+        Assert.Contains("\"mango\"", result);
+        Assert.Contains("\"zebra\"", result);
+
+        // Verify alphabetical order
+        var appleIdx = result.IndexOf("\"apple\"");
+        var mangoIdx = result.IndexOf("\"mango\"");
+        var zebraIdx = result.IndexOf("\"zebra\"");
+        Assert.True(appleIdx < mangoIdx);
+        Assert.True(mangoIdx < zebraIdx);
+    }
 }
