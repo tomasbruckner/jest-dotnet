@@ -10,7 +10,7 @@ internal static class SnapshotResolver
         return File.Exists(path) ? File.ReadAllText(path) : "";
     }
 
-    internal static void StoreSnapshotData(string path, object actualObject)
+    internal static void StoreSnapshotData(string path, object? actualObject)
     {
         var serialized = Serializer.Serialize(actualObject);
         Directory.CreateDirectory(Path.GetDirectoryName(path)!);

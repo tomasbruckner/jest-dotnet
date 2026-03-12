@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [2.2.0] - 2026-03-12
+
+### Added
+- Pre-serializer extension point — register custom type-to-JSON converters for types that System.Text.Json cannot serialize. Use `SnapshotSettings.AddPreSerializer<T>()` to register and `SnapshotSettings.ClearPreSerializers()` to reset.
+
+### Fixed
+- Newtonsoft.Json types (`JObject`, `JArray`, `JToken`) now work correctly when using the pre-serializer hook — previously STJ produced empty arrays or incorrect output for these types
+
+### Changed
+- All public API methods (`ShouldMatchSnapshot`, `ShouldMatchInlineSnapshot`, `ShouldMatchObject`) now accept `null` without requiring the null-forgiving operator (`!`)
+
 ## [2.1.0] - 2026-03-11
 
 ### Changed

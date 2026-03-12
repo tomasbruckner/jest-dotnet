@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.JsonDiffPatch;
@@ -91,4 +92,21 @@ public static class SnapshotSettings
     ///     diff options creator
     /// </summary>
     public static Func<JsonDiffOptions?> CreateDiffOptions = DefaultCreateDiffOptions;
+
+    private static readonly Dictionary<Type, Func<object, string>> PreSerializers = new();
+
+    public static void AddPreSerializer<T>(Func<T, string> serializer)
+    {
+        PreSerializers[typeof(T)] = obj => serializer((T)obj);
+    }
+
+    public static void ClearPreSerializers()
+    {
+        PreSerializers.Clear();
+    }
+
+    internal static bool TryGetPreSerializer(Type type, out Func<object, string>? serializer)
+    {
+        return PreSerializers.TryGetValue(type, out serializer);
+    }
 }
