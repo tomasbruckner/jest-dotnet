@@ -15,9 +15,9 @@ public class NullAndPrimitiveTests
     }
 
     [Fact]
-    public void NullPassedToShouldMatchObject()
+    public void NullPassedToShouldMatchSnapshot()
     {
-        JestAssert.ShouldMatchObject(null, null);
+        JestAssert.ShouldMatchSnapshot(null);
     }
 
     // --- Primitives ---
