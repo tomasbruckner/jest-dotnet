@@ -283,21 +283,32 @@ Properties are sorted alphabetically by default using ordinal string comparison 
 
 Circular references are handled by default via `ReferenceHandler.IgnoreCycles` — cyclic references are serialized as `null` instead of throwing.
 
-### Custom type serialization (pre-serializers)
+### Using Newtonsoft.Json types
 
-If you use types from external libraries that System.Text.Json cannot serialize correctly (e.g., Newtonsoft.Json's `JObject`), you can register a pre-serializer that converts the type to a JSON string before snapshot processing:
+If your codebase uses Newtonsoft.Json types (`JObject`, `JArray`, `JToken`), System.Text.Json cannot serialize them correctly out of the box. Register pre-serializers to handle them:
 
 ```csharp
 // In test setup or assembly initializer
 SnapshotSettings.AddPreSerializer<JObject>(obj => obj.ToString());
 SnapshotSettings.AddPreSerializer<JArray>(obj => obj.ToString());
+```
 
-// Then in tests, this just works:
+Then snapshot testing works as expected:
+
+```csharp
 var json = JObject.Parse("{\"name\": \"Alice\", \"age\": 30}");
 json.ShouldMatchSnapshot();
 ```
 
-The pre-serializer output is re-serialized through System.Text.Json to ensure consistent formatting. Key order from the pre-serializer is preserved as-is.
+### Custom type serialization (pre-serializers)
+
+The pre-serializer hook is not limited to Newtonsoft — you can register a custom serializer for any type that System.Text.Json cannot handle:
+
+```csharp
+SnapshotSettings.AddPreSerializer<MyCustomType>(obj => obj.ToJson());
+```
+
+The pre-serializer function should return a valid JSON string. The output is re-serialized through System.Text.Json to ensure consistent formatting. Key order from the pre-serializer is preserved as-is.
 
 To remove all registered pre-serializers (e.g., for test cleanup):
 
