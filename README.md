@@ -283,6 +283,28 @@ Properties are sorted alphabetically by default using ordinal string comparison 
 
 Circular references are handled by default via `ReferenceHandler.IgnoreCycles` — cyclic references are serialized as `null` instead of throwing.
 
+### Custom type serialization (pre-serializers)
+
+If you use types from external libraries that System.Text.Json cannot serialize correctly (e.g., Newtonsoft.Json's `JObject`), you can register a pre-serializer that converts the type to a JSON string before snapshot processing:
+
+```csharp
+// In test setup or assembly initializer
+SnapshotSettings.AddPreSerializer<JObject>(obj => obj.ToString());
+SnapshotSettings.AddPreSerializer<JArray>(obj => obj.ToString());
+
+// Then in tests, this just works:
+var json = JObject.Parse("{\"name\": \"Alice\", \"age\": 30}");
+json.ShouldMatchSnapshot();
+```
+
+The pre-serializer output is re-serialized through System.Text.Json to ensure consistent formatting. Key order from the pre-serializer is preserved as-is.
+
+To remove all registered pre-serializers (e.g., for test cleanup):
+
+```csharp
+SnapshotSettings.ClearPreSerializers();
+```
+
 ## Caveats
 ### Dynamic objects
 You cannot call neither extension nor `JestAssert` with `dynamic` object. You need to cast it to `object` (or real type).
