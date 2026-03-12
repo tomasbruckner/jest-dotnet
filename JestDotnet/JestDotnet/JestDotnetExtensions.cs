@@ -9,7 +9,7 @@ namespace JestDotnet;
 public static class JestDotnetExtensions
 {
     public static void ShouldMatchSnapshot(
-        this object actual,
+        this object? actual,
         string hint = "",
         JsonDiffOptions? diffOptions = null,
         [CallerMemberName] string memberName = "",
@@ -33,7 +33,7 @@ public static class JestDotnetExtensions
     }
 
     public static void ShouldMatchInlineSnapshot(
-        this object actual,
+        this object? actual,
         string inlineSnapshot,
         JsonDiffOptions? diffOptions = null
     )
@@ -45,7 +45,7 @@ public static class JestDotnetExtensions
         }
     }
 
-    public static void ShouldMatchObject(this object actual, object expected, JsonDiffOptions? diffOptions = null)
+    public static void ShouldMatchObject(this object? actual, object? expected, JsonDiffOptions? diffOptions = null)
     {
         var (isValid, message) = SnapshotComparer.CompareSnapshots(expected, actual, diffOptions);
         if (!isValid)

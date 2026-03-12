@@ -8,8 +8,7 @@ internal static class SnapshotUpdater
     private const string UpdateSnapshotEnvironmentVariable = "UPDATE";
     private const string ContinuousIntegrationEnvironmentVariable = "CI";
 
-    internal static void TryUpdateSnapshot<T>(string path, T actual, string? message) where T : notnull
-    {
+    internal static void TryUpdateSnapshot<T>(string path, T actual, string? message)    {
         if (!ShouldUpdate())
         {
             throw new SnapshotMismatch(message ?? "Snapshot mismatch");
@@ -18,8 +17,7 @@ internal static class SnapshotUpdater
         SnapshotResolver.StoreSnapshotData(path, actual);
     }
 
-    internal static void TryUpdateMissingSnapshot<T>(string path, T actual) where T : notnull
-    {
+    internal static void TryUpdateMissingSnapshot<T>(string path, T actual)    {
         if (!ShouldUpdateIfEmpty())
         {
             throw new SnapshotDoesNotExist("Snapshot does not exist");

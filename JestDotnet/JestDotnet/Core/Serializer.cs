@@ -8,7 +8,7 @@ namespace JestDotnet.Core;
 
 internal static class Serializer
 {
-    internal static string Serialize(object obj)
+    internal static string Serialize(object? obj)
     {
         var options = SnapshotSettings.CreateSerializerOptions();
         using var stream = new MemoryStream();

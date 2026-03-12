@@ -10,8 +10,7 @@ internal static class SnapshotComparer
         T expectedObject,
         T actualObject,
         JsonDiffOptions? diffOptions = null
-    ) where T : notnull
-    {
+    )    {
         return Diff(
             Serializer.Serialize(expectedObject),
             Serializer.Serialize(actualObject),
@@ -23,8 +22,7 @@ internal static class SnapshotComparer
         string serializedExpectedObject,
         T actualObject,
         JsonDiffOptions? diffOptions = null
-    ) where T : notnull
-    {
+    )    {
         return Diff(
             serializedExpectedObject,
             Serializer.Serialize(actualObject),

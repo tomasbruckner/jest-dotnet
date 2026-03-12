@@ -11,7 +11,13 @@ public class NullAndPrimitiveTests
     [Fact]
     public void NullPassedToShouldMatchInlineSnapshot()
     {
-        JestAssert.ShouldMatchInlineSnapshot(null!, "null");
+        JestAssert.ShouldMatchInlineSnapshot(null, "null");
+    }
+
+    [Fact]
+    public void NullPassedToShouldMatchSnapshot()
+    {
+        JestAssert.ShouldMatchSnapshot(null);
     }
 
     // --- Primitives ---
