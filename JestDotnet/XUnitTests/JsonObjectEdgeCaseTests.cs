@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text.Json;
 using System.Text.Json.Nodes;
 using JestDotnet;
 using Xunit;
@@ -274,6 +275,51 @@ public class JsonObjectEdgeCaseTests
         };
 
         obj.ShouldMatchSnapshot();
+    }
+
+    // --- JsonElement sorting ---
+
+    [Fact]
+    public void JsonElementShouldBeSortedAlphabetically()
+    {
+        using var doc = JsonDocument.Parse("""{"zebra":1,"apple":2,"mango":3}""");
+        var element = doc.RootElement;
+
+        element.ShouldMatchInlineSnapshot("""
+                                          {
+                                            "apple": 2,
+                                            "mango": 3,
+                                            "zebra": 1
+                                          }
+                                          """);
+    }
+
+    // --- POCO with nested JsonObject sorting ---
+
+    [Fact]
+    public void PocoWithJsonObjectPropertySortsNestedKeys()
+    {
+        var wrapper = new JsonObjectWrapper
+        {
+            Name = "test",
+            Data = new JsonObject
+            {
+                ["zebra"] = 1,
+                ["apple"] = 2,
+                ["mango"] = 3,
+            },
+        };
+
+        wrapper.ShouldMatchInlineSnapshot("""
+                                          {
+                                            "Data": {
+                                              "apple": 2,
+                                              "mango": 3,
+                                              "zebra": 1
+                                            },
+                                            "Name": "test"
+                                          }
+                                          """);
     }
 
     private class JsonObjectWrapper
