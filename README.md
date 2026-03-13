@@ -250,7 +250,7 @@ SnapshotSettings.SnapshotDirectory = SnapshotSettings.DefaultSnapshotDirectory;
 ```
 
 ### Configuring serialization
-For serialization, System.Text.Json is used. By default, snapshots are written with indented formatting and non-ASCII characters are preserved as literal UTF-8 (using `JavaScriptEncoder.Create(UnicodeRanges.All)`).
+For serialization, System.Text.Json is used. By default, snapshots are written with indented formatting, non-ASCII characters are preserved as literal UTF-8, HTML-sensitive characters (`<`, `>`, `&`) are not escaped (using `JavaScriptEncoder.UnsafeRelaxedJsonEscaping`), and double quotes inside string values are escaped as `\"` instead of `\u0022`.
 
 If you need to configure it, you can use `SnapshotSettings` class to specify your own
 
@@ -277,7 +277,7 @@ JestAssert.ShouldMatchSnapshot(testObject);
 
 Properties are sorted alphabetically by default using ordinal string comparison (`AlphabeticalSortModifier.SortProperties`). This ensures deterministic, culture-independent snapshot output regardless of property declaration order.
 
-> **Note:** When overriding `CreateSerializerOptions`, include `AlphabeticalSortModifier.SortProperties` in your `TypeInfoResolver` modifiers to keep the default sorting behavior. Also include `Encoder = JavaScriptEncoder.Create(UnicodeRanges.All)` to keep non-ASCII characters readable and `ReferenceHandler = ReferenceHandler.IgnoreCycles` to handle circular references.
+> **Note:** When overriding `CreateSerializerOptions`, include `AlphabeticalSortModifier.SortProperties` in your `TypeInfoResolver` modifiers to keep the default sorting behavior. Also include `Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping` to keep non-ASCII and HTML characters readable and `ReferenceHandler = ReferenceHandler.IgnoreCycles` to handle circular references.
 
 #### Circular references
 

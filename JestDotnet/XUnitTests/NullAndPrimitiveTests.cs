@@ -88,6 +88,24 @@ public class NullAndPrimitiveTests
         JestAssert.ShouldMatchSnapshot("he said \"hi\"");
     }
 
+    [Fact]
+    public void StringWithHtmlCharacters()
+    {
+        JestAssert.ShouldMatchSnapshot("<p>Test Comment</p>");
+    }
+
+    [Fact]
+    public void StringWithSingleQuotes()
+    {
+        JestAssert.ShouldMatchSnapshot("it's a test");
+    }
+
+    [Fact]
+    public void ObjectWithHtmlCharacters()
+    {
+        JestAssert.ShouldMatchSnapshot(new { comment = "<p>Test & Comment</p>", tag = "<div>" });
+    }
+
     // --- Boxed primitives ---
 
     [Fact]

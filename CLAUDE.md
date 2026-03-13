@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-JestDotnet is a snapshot testing library for .NET, inspired by Jest. It serializes objects to JSON, saves snapshots to files, and compares against them on subsequent runs. Published on NuGet as `JestDotnet` (v2.3.0).
+JestDotnet is a snapshot testing library for .NET, inspired by Jest. It serializes objects to JSON, saves snapshots to files, and compares against them on subsequent runs. Published on NuGet as `JestDotnet` (v2.4.0).
 
 ## Git Workflow
 
@@ -28,7 +28,7 @@ UPDATE=true dotnet test                               # Update snapshots
 - `JestDotnetExtensions` — same methods as extension methods on `object`
 
 **Core pipeline** (`JestDotnet/Core/`):
-- `Serializer` — converts objects to JSON via System.Text.Json (properties sorted alphabetically by default, literal UTF-8 output)
+- `Serializer` — converts objects to JSON via System.Text.Json (properties sorted alphabetically by default, literal UTF-8 output, HTML chars unescaped via `UnsafeRelaxedJsonEscaping`, double quotes escaped as `\"` not `\u0022`)
 - `SnapshotResolver` — reads/writes `.snap` files in `__snapshots__/` directories, derives path from test class filename + method name + optional hint
 - `SnapshotComparer` — diffs expected vs actual using `SystemTextJson.JsonDiffPatch`
 - `SnapshotUpdater` — orchestrates create/update/fail logic; checks `UPDATE` env var to update snapshots, `CI` env var to prevent snapshot creation in CI
