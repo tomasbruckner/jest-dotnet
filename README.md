@@ -308,7 +308,7 @@ The pre-serializer hook is not limited to Newtonsoft — you can register a cust
 SnapshotSettings.AddPreSerializer<MyCustomType>(obj => obj.ToJson());
 ```
 
-The pre-serializer function should return a valid JSON string. The output is re-serialized through System.Text.Json to ensure consistent formatting. Key order from the pre-serializer is preserved as-is.
+The pre-serializer function should return a valid JSON string. The output is re-serialized through System.Text.Json to ensure consistent formatting. Keys are sorted alphabetically in the final output, regardless of the order returned by the pre-serializer.
 
 To remove all registered pre-serializers (e.g., for test cleanup):
 
