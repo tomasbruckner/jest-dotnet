@@ -29,7 +29,7 @@
     },
     "third": {
       "IntNullValue": 4,
-      "IntValue": 312,
+      "IntValue": -1,
       "ReadOnlyDictionaryChildren": null,
       "StringValue1": "nested2",
       "StringValue2": "x"
@@ -37,6 +37,6 @@
   },
   "DateTimeValue": "9999-12-31T23:59:59.9999999",
   "IntNullValue": null,
-  "IntValue": 123,
+  "IntValue": -1,
   "StringValue": ""
 }

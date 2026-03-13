@@ -27,7 +27,7 @@ public class PreSerializerTests
     }
 
     [Fact]
-    public void PreSerializerShouldPreserveKeyOrder()
+    public void PreSerializerShouldSortKeysAlphabetically()
     {
         SnapshotSettings.AddPreSerializer<CustomSerializable>(
             obj => $$"""{"zName": "{{obj.Name}}", "aAge": {{obj.Age}}}""");
@@ -36,8 +36,8 @@ public class PreSerializerTests
             var obj = new CustomSerializable("Bob", 25);
             JestAssert.ShouldMatchInlineSnapshot(obj, """
                 {
-                  "zName": "Bob",
-                  "aAge": 25
+                  "aAge": 25,
+                  "zName": "Bob"
                 }
                 """);
         }
