@@ -5,7 +5,7 @@ using System.Text.Json;
 using System.Text.Json.JsonDiffPatch;
 using System.Text.Json.Serialization;
 using System.Text.Json.Serialization.Metadata;
-using System.Text.Unicode;
+
 
 namespace JestDotnet.Core.Settings;
 
@@ -60,7 +60,7 @@ public static class SnapshotSettings
         new JsonSerializerOptions
         {
             WriteIndented = true,
-            Encoder = JavaScriptEncoder.Create(UnicodeRanges.All),
+            Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
             ReferenceHandler = ReferenceHandler.IgnoreCycles,
             TypeInfoResolver = new DefaultJsonTypeInfoResolver
             {

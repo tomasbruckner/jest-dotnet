@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [2.4.0] - 2026-03-13
+
+### Changed
+- JSON encoder switched from `JavaScriptEncoder.Create(UnicodeRanges.All)` to `JavaScriptEncoder.UnsafeRelaxedJsonEscaping` — HTML-sensitive characters (`<`, `>`, `&`) now appear as literals in snapshots instead of Unicode escape sequences (`\u003C`, `\u003E`, `\u0026`)
+
+### Upgrade notes
+- Snapshots containing HTML-sensitive characters will change. Run `UPDATE=true dotnet test` to regenerate snapshots after upgrading.
+
 ## [2.3.0] - 2026-03-13
 
 ### Fixed
