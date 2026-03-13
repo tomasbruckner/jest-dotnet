@@ -43,7 +43,7 @@ internal static class Serializer
         using var sortedWriter = new Utf8JsonWriter(sortedStream, writerOptions);
         JsonSerializer.Serialize(sortedWriter, sorted, options);
         sortedWriter.Flush();
-        return Encoding.UTF8.GetString(sortedStream.ToArray());
+        return Encoding.UTF8.GetString(sortedStream.ToArray()).Replace("\\u0022", "\\\"");
     }
 
     internal static void SortJsonNode(JsonNode? node)

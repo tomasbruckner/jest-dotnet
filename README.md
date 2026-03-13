@@ -250,7 +250,7 @@ SnapshotSettings.SnapshotDirectory = SnapshotSettings.DefaultSnapshotDirectory;
 ```
 
 ### Configuring serialization
-For serialization, System.Text.Json is used. By default, snapshots are written with indented formatting, non-ASCII characters are preserved as literal UTF-8, and HTML-sensitive characters (`<`, `>`, `&`) are not escaped (using `JavaScriptEncoder.UnsafeRelaxedJsonEscaping`).
+For serialization, System.Text.Json is used. By default, snapshots are written with indented formatting, non-ASCII characters are preserved as literal UTF-8, HTML-sensitive characters (`<`, `>`, `&`) are not escaped (using `JavaScriptEncoder.UnsafeRelaxedJsonEscaping`), and double quotes inside string values are escaped as `\"` instead of `\u0022`.
 
 If you need to configure it, you can use `SnapshotSettings` class to specify your own
 

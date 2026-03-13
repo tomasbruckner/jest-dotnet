@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [2.5.0] - 2026-03-13
+
+### Changed
+- Double quotes inside JSON string values are now escaped as `\"` instead of `\u0022` for improved snapshot readability
+
+### Upgrade notes
+- Snapshots containing escaped double quotes will change. Run `UPDATE=true dotnet test` to regenerate snapshots after upgrading. Existing comparisons are unaffected since `JsonNode.Parse` treats both forms identically.
+
 ## [2.4.0] - 2026-03-13
 
 ### Changed
