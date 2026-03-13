@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <TargetFrameworks>net10.0</TargetFrameworks>
-        <Version>2.5.0</Version>
+        <Version>2.4.0</Version>
         <Authors>Tomas Bruckner</Authors>
         <RepositoryUrl>https://github.com/tomasbruckner/jest-dotnet</RepositoryUrl>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
