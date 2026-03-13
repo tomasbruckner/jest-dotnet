@@ -41,6 +41,15 @@ UPDATE=true dotnet test                               # Update snapshots
 4. Mismatch in CI (`CI=true`): throws `SnapshotMismatch`
 5. Missing snapshot in CI: throws `SnapshotDoesNotExist`
 
+## PR Checklist
+
+Before creating a PR, include these in the feature branch:
+
+1. **Version bump** — update `<Version>` in `JestDotnet/JestDotnet/JestDotnet.csproj`
+2. **CHANGELOG.md** — add entry under new version heading following Keep a Changelog format
+3. **README.md** — update if user-facing behavior changed
+4. **CLAUDE.md** — update if version, architecture, or configuration changed
+
 ## Key Configuration
 
 - Target framework: `net10.0`
