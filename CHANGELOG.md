@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [2.3.0] - 2026-03-13
+
+### Fixed
+- `JsonNode`, `JsonElement`, and pre-serializer output now have keys sorted alphabetically, matching the existing POCO behavior. Previously, these types preserved insertion order, producing inconsistent snapshots.
+- `JsonNode` values nested inside POCOs or dictionaries are also sorted.
+
+### Upgrade notes
+- All snapshot files containing `JsonObject`, `JsonElement`, or pre-serializer output will change (keys sorted alphabetically instead of insertion order). Run `UPDATE=true dotnet test` to regenerate snapshots after upgrading.
+- Inline snapshots (`ShouldMatchInlineSnapshot`) must be updated to use alphabetically sorted keys.
+
 ## [2.2.0] - 2026-03-12
 
 ### Added
@@ -21,10 +31,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - `ReferenceHandler.IgnoreCycles` enabled by default — circular references are serialized as `null` instead of throwing `JsonException`
 
 ### Removed
-- `SortedDictionaryConverterFactory` — removed custom dictionary key sorting converter. POCO properties are still sorted alphabetically via `AlphabeticalSortModifier`. Dictionary and `JsonObject` keys now use their natural order (insertion order, or use `SortedDictionary<K,V>` for sorted keys).
+- `SortedDictionaryConverterFactory` — removed custom dictionary key sorting converter. POCO properties are still sorted alphabetically via `AlphabeticalSortModifier`. As of v2.3.0, all JSON object keys (including `JsonObject` and `JsonElement`) are also sorted alphabetically.
 
 ### Upgrade notes
-- Dictionary and `JsonObject` snapshots will change (keys use insertion order instead of sorted order). Run `UPDATE=true dotnet test` to regenerate snapshots after upgrading.
+- Dictionary snapshots will change. Run `UPDATE=true dotnet test` to regenerate snapshots after upgrading.
 
 ## [2.0.1] - 2026-03-11
 
