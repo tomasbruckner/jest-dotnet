@@ -95,6 +95,12 @@ public class NullAndPrimitiveTests
     }
 
     [Fact]
+    public void StringWithSingleQuotes()
+    {
+        JestAssert.ShouldMatchSnapshot("it's a test");
+    }
+
+    [Fact]
     public void ObjectWithHtmlCharacters()
     {
         JestAssert.ShouldMatchSnapshot(new { comment = "<p>Test & Comment</p>", tag = "<div>" });
