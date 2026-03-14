@@ -66,6 +66,7 @@ public static class SnapshotSettings
             {
                 Modifiers = { AlphabeticalSortModifier.SortProperties }
             },
+            Converters = { new RuntimePolymorphicConverterFactory() },
         };
 
     /// <summary>
