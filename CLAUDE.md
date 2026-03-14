@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-JestDotnet is a snapshot testing library for .NET, inspired by Jest. It serializes objects to JSON, saves snapshots to files, and compares against them on subsequent runs. Published on NuGet as `JestDotnet` (v2.4.0).
+JestDotnet is a snapshot testing library for .NET, inspired by Jest. It serializes objects to JSON, saves snapshots to files, and compares against them on subsequent runs. Published on NuGet as `JestDotnet` (v2.5.0).
 
 ## Git Workflow
 
